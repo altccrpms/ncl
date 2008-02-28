@@ -1,0 +1,16 @@
+--- ncl_ncarg-5.0.0/ni/src/mkwrap/yMakefile.wrapit	2007-12-14 15:00:17.000000000 -0700
++++ ncl_ncarg-5.0.0/ni/src/mkwrap/yMakefile	2007-12-14 15:00:41.000000000 -0700
+@@ -55,11 +55,11 @@
+ 
+ GEN_SRCS	=	y.tab.c lex.yy.c
+ 
+-STATIC_SRCS	=	Symbol.c wrapit.c
++STATIC_SRCS	=	Symbol.c wrapit77.c
+ 
+ GEN_OBJS	=	y.tab.o lex.yy.o
+ 
+-STATIC_OBJS	=	Symbol.o wrapit.o
++STATIC_OBJS	=	Symbol.o wrapit77.o
+ 
+ OBJS		=	$(GEN_OBJS) $(STATIC_OBJS)
+ 

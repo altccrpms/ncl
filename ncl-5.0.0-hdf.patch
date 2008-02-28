@@ -1,0 +1,93 @@
+--- ncl_ncarg-5.0.0/ni/src/ncl/NclHDF.c.hdf	2007-06-20 19:35:32.000000000 -0600
++++ ncl_ncarg-5.0.0/ni/src/ncl/NclHDF.c	2007-12-13 12:43:33.000000000 -0700
+@@ -63,7 +63,7 @@
+ 	NclQuark var_path;
+ 	nc_type	data_type;
+ 	int	n_dims;
+-	int	dim[MAX_VAR_DIMS];
++	int	dim[H4_MAX_VAR_DIMS];
+ 	int	natts;
+ 	HDFAttInqRecList *att_list;
+ };
+@@ -308,9 +308,9 @@
+ 
+ #endif
+ {
+-	char buffer[MAX_NC_NAME];
++	char buffer[H4_MAX_NC_NAME];
+ 	char *tp, *cp;
+-	char len = MIN(MAX_NC_NAME - 2,strlen(hdf_name));
++	char len = MIN(H4_MAX_NC_NAME - 2,strlen(hdf_name));
+ 	
+ 	strncpy(buffer,hdf_name,len);
+ 	cp = tp = buffer;
+@@ -342,7 +342,7 @@
+ 
+ 	*cp = '\0';
+ 	if (ncl_class) {
+-		len = MIN(MAX_NC_NAME - 1,len + 2 + strlen(ncl_class));
++		len = MIN(H4_MAX_NC_NAME - 1,len + 2 + strlen(ncl_class));
+ 		strncat(cp,"__",len);
+ 		cp += 2;
+ 		*cp = '\0';
+@@ -460,9 +460,9 @@
+ 	int32 sd_id, sds_id, sds_ref;
+       intn  status;
+       int32 n_datasets, n_file_attrs, index;
+-      int32 dim_sizes[MAX_VAR_DIMS];
++      int32 dim_sizes[H4_MAX_VAR_DIMS];
+       int32 rank, data_type, n_attrs;
+-      char  name[MAX_NC_NAME];    int   i;    
++      char  name[H4_MAX_NC_NAME];    int   i;    
+       /********************* End of variable declaration ***********************/    
+       /*    * Open the file and initialize the SD interface.    */    
+       sd_id = SDstart (path, DFACC_READ); 
+@@ -647,8 +647,8 @@
+ 	HDFFileRecord *tmp = (HDFFileRecord*) rec;
+ 	int cdfid;
+ 	int dummy;
+-	char buffer[MAX_NC_NAME];
+-	char buffer2[MAX_NC_NAME];
++	char buffer[H4_MAX_NC_NAME];
++	char buffer2[H4_MAX_NC_NAME];
+ 	int i,j,has_scalar_dim = 0,nvars = 0;
+ 	long tmp_size;
+ 	HDFAttInqRecList **stepalptr;
+@@ -1247,7 +1247,7 @@
+ 	int cdfid = -1;
+ 	int ret = -1,i;
+ 	int no_stride = 1;
+-	long count[MAX_NC_DIMS];
++	long count[H4_MAX_NC_DIMS];
+ 
+ 	stepvl = rec->vars;
+ 	while(stepvl != NULL) {
+@@ -1467,7 +1467,7 @@
+ 	HDFFileRecord *rec = (HDFFileRecord*)therec;
+ 	int cdfid;
+ 	HDFVarInqRecList *stepvl; 
+-	long count[MAX_NC_DIMS];
++	long count[H4_MAX_NC_DIMS];
+ 	int i,n_elem = 1,no_stride = 1;
+ 	int ret;
+ 
+@@ -1950,7 +1950,7 @@
+ 	HDFVarInqRecList *stepvl = NULL;
+ 	int cdfid,i,ret;
+ 	nc_type *the_data_type;
+-	int dim_ids[MAX_NC_DIMS];
++	int dim_ids[H4_MAX_NC_DIMS];
+ 	HDFDimInqRecList* stepdl = NULL;
+ 	int add_scalar_dim = 0;
+ 
+--- ncl_ncarg-5.0.0/ni/src/ncl/NclHDFEOS.c.hdf	2007-06-20 19:35:32.000000000 -0600
++++ ncl_ncarg-5.0.0/ni/src/ncl/NclHDFEOS.c	2007-12-13 12:42:42.000000000 -0700
+@@ -67,7 +67,7 @@
+ 	NclQuark var_class_name;
+ 	int32 typenumber;
+ 	int32 n_dims;
+-	int32 dim[MAX_VAR_DIMS];
++	int32 dim[H4_MAX_VAR_DIMS];
+ 	int32 n_int_atts;
+ 	HDFEOSAttInqRecList *att_int_list;
+ };
