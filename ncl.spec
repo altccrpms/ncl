@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -40,6 +40,7 @@ Patch10:        ncl-5.0.0-no_install_dep.patch
 # is all
 Patch11:        ncl-5.0.0-build_n_scripts.patch
 Patch12:        ncl-5.0.0-netcdff.patch
+Patch13:        ncl-5.0.0-includes.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel, hdf-devel >= 4.2r2, libjpeg-devel
@@ -107,6 +108,7 @@ Example programs and data using NCL.
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
+%patch13 -p1 -b .includes
 
 #Move wrapit.c to wrapit77.c to avoid flex make rule issues
 #This works in combination with the wrapit patch
@@ -117,8 +119,8 @@ mv ni/src/mkwrap/wrapit.c ni/src/mkwrap/wrapit77.c
 cp config/LINUX.ppc32.GNU config/LINUX
 %endif
 
-#Fixup LINUX config
-sed -i -e '/StdDefines/s/-DSYSV//' config/LINUX
+#Fixup LINUX config (to expose vsnprintf prototype)
+sed -i -e '/StdDefines/s/-DSYSV/-D_ISOC99_SOURCE/' config/LINUX
 
 #Fixup libdir for atlas lib locations
 sed -i -e s,%LIBDIR%,%{_libdir}, config/Project
@@ -147,6 +149,8 @@ popd
 # ./config/ymkmf could be also short circuited, since it does:
 # (cd ./config; make -f Makefile.ini clean all)
 # ./config/ymake -config ./config -Curdir . -Topdir .
+
+#make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -Werror-implicit-function-declaration" F77=gfortran F77_LD=gfortran\
 
 make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC" F77=gfortran F77_LD=gfortran\
  CTOFLIBS="-lgfortran" FCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-second-underscore -fno-range-check" \
@@ -282,6 +286,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 27 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-10
+- Add patch to fixup some missing includes
+- Define _ISOC99_SOURCE to expose vsnprintf prototype
+- Update hdf patch to remove hdf/netcdf.h include
+
 * Mon Feb 18 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-9
 - Rename Site.local to Site.local.ncl
 - Add comment for imake BR

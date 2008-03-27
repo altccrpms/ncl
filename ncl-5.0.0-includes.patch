@@ -1,0 +1,68 @@
+--- ncl_ncarg-5.0.0/common/src/libncarg_c/bcopyswap.c.includes	2000-08-21 22:03:31.000000000 -0600
++++ ncl_ncarg-5.0.0/common/src/libncarg_c/bcopyswap.c	2008-03-21 11:01:12.000000000 -0600
+@@ -33,6 +33,7 @@
+  *		of 4.
+  */
+ #include <stdio.h>
++#include <stdlib.h>
+ 
+ bcopyswap(b1, b2, size)
+ 	char	*b1;
+--- ncl_ncarg-5.0.0/common/src/bin/ncargpath/ncargpath.c.includes	2000-08-21 22:04:15.000000000 -0600
++++ ncl_ncarg-5.0.0/common/src/bin/ncargpath/ncargpath.c	2008-03-21 11:02:16.000000000 -0600
+@@ -41,6 +41,7 @@
+  */
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <string.h>
+ #include <ncarg/c.h>
+ 
+--- ncl_ncarg-5.0.0/ncarg2d/src/libncarg/plotchar/bofred.c.includes	2000-08-22 09:05:20.000000000 -0600
++++ ncl_ncarg-5.0.0/ncarg2d/src/libncarg/plotchar/bofred.c	2008-03-21 11:04:17.000000000 -0600
+@@ -25,6 +25,10 @@
+ ************************************************************************/
+ 
+ 
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <stdlib.h>
+ #include <stdio.h>
+ #include <ncarg/c.h>
+ 
+--- ncl_ncarg-5.0.0/ncarg2d/src/libncarg/areasC/c_argeti.c.includes	2000-08-22 09:02:06.000000000 -0600
++++ ncl_ncarg-5.0.0/ncarg2d/src/libncarg/areasC/c_argeti.c	2008-03-21 11:05:46.000000000 -0600
+@@ -24,6 +24,7 @@
+ *                                                                       *
+ ************************************************************************/
+ 
++#include <string.h>
+ #include <ncarg/ncargC.h>
+ 
+ extern void NGCALLF(argeti,ARGETI)(NGstring,int*,int);
+--- ncl_ncarg-5.0.0/ncarg2d/src/libncarg/ncargC.h.includes	2008-03-21 11:10:43.000000000 -0600
++++ ncl_ncarg-5.0.0/ncarg2d/src/libncarg/ncargC.h	2008-03-21 11:10:25.000000000 -0600
+@@ -176,6 +176,12 @@
+ #endif
+ );
+ 
++extern void NGCALLF(agback,AGBACK)(
++#ifdef  NeedFuncProto
++    void
++#endif
++);
++
+ extern char *c_agbnch(
+ #ifdef  NeedFuncProto
+     int idsh
+--- ncl_ncarg-5.0.0/ncarg2d/src/libncarg_gks/zlib/gzio.c.includes	2005-12-04 13:52:16.000000000 -0700
++++ ncl_ncarg-5.0.0/ncarg2d/src/libncarg_gks/zlib/gzio.c	2008-03-21 11:15:20.000000000 -0600
+@@ -8,6 +8,7 @@
+ /* @(#) $Id: gzio.c,v 1.2 2005/12/04 20:52:16 haley Exp $ */
+ 
+ #include <stdio.h>
++#include <stdarg.h>
+ 
+ #include "zutil.h"
+ 
