@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -41,6 +41,7 @@ Patch10:        ncl-5.0.0-no_install_dep.patch
 Patch11:        ncl-5.0.0-build_n_scripts.patch
 Patch12:        ncl-5.0.0-netcdff.patch
 Patch13:        ncl-5.0.0-includes.patch
+Patch14:        ncl-5.0.0-uint32.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel, hdf-devel >= 4.2r2, libjpeg-devel
@@ -109,6 +110,7 @@ Example programs and data using NCL.
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
+%patch14 -p1 -b .uint32
 
 #Move wrapit.c to wrapit77.c to avoid flex make rule issues
 #This works in combination with the wrapit patch
@@ -286,6 +288,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr 11 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-11
+- Add patch to fix raster image problems on non 32-bit platforms
+- Add more includes to includes patch
+
 * Thu Mar 27 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-10
 - Add patch to fixup some missing includes
 - Define _ISOC99_SOURCE to expose vsnprintf prototype
