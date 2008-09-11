@@ -4,7 +4,7 @@
 #define SharePath $(DESTDIR)@datadir@
 
 #define BuildWithF90 TRUE
-#define IncSearch -I/usr/include/netcdf-3
+#define IncSearch -I/usr/include/netcdf
 #define LibSearch -L@libdir@/hdf
 
 #define BuildUdunits TRUE
