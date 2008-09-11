@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -288,6 +288,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Sep 11 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-12
+- Rebuild for new libdap
+
 * Fri Apr 11 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-11
 - Add patch to fix raster image problems on non 32-bit platforms
 - Add more includes to includes patch
