@@ -290,6 +290,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Thu Sep 11 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-12
 - Rebuild for new libdap
+- Fix netcdf include location
 
 * Fri Apr 11 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-11
 - Add patch to fix raster image problems on non 32-bit platforms
