@@ -7,8 +7,6 @@
 #define IncSearch -I/usr/include/netcdf
 #define LibSearch -L@libdir@/hdf
 
-#define BuildUdunits TRUE
-#define UdUnitslib
 #define BuildV5D FALSE
 #define BuildHDFEOS FALSE
 #define BuildTRIANGLE 0

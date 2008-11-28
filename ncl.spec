@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -42,6 +42,8 @@ Patch11:        ncl-5.0.0-build_n_scripts.patch
 Patch12:        ncl-5.0.0-netcdff.patch
 Patch13:        ncl-5.0.0-includes.patch
 Patch14:        ncl-5.0.0-uint32.patch
+# Use /etc/udunits.dat
+Patch15:        ncl-5.0.0-udunits.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel, hdf-devel >= 4.2r2, libjpeg-devel
@@ -49,6 +51,8 @@ BuildRequires:  g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
+BuildRequires:  udunits-devel
+Requires:       udunits
 
 Provides:       ncarg = %{version}-%{release}
 Obsoletes:      ncarg < %{version}-%{release}
@@ -144,6 +148,7 @@ for file in */*.ncl; do
 done
 popd
 
+
 %build
 # short-cicuit:
 ./config/ymkmf
@@ -171,6 +176,8 @@ do
    manname=`basename $manpage`
    mv $manpage $RPM_BUILD_ROOT%{_mandir}/man3/%{name}_$manname
 done
+# Use system udunits
+rm -r $RPM_BUILD_ROOT%{_datadir}/ncarg/udunits
 # Remove $RPM_BUILD_ROOT from MakeNcl
 #sed -i -e s,$RPM_BUILD_ROOT,,g $RPM_BUILD_ROOT%{_bindir}/MakeNcl
 
@@ -239,7 +246,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/nclscripts/
 %{_datadir}/ncarg/ngwww/
 %{_datadir}/ncarg/sysresfile/
-%{_datadir}/ncarg/udunits/
 %{_datadir}/ncarg/xapp/
 %{_mandir}/man1/*.gz
 %{_mandir}/man5/*.gz
@@ -288,6 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov 27 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-13
+- Enable udunits support add use system udunits.dat
+
 * Thu Sep 11 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-12
 - Rebuild for new libdap
 - Fix netcdf include location
