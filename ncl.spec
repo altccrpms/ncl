@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -115,6 +115,7 @@ Example programs and data using NCL.
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch14 -p1 -b .uint32
+%patch15 -p1 -b .udunits
 
 #Move wrapit.c to wrapit77.c to avoid flex make rule issues
 #This works in combination with the wrapit patch
@@ -294,6 +295,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Dec 4 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-14
+- Actually apply udunits patch
+
 * Thu Nov 27 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-13
 - Enable udunits support add use system udunits.dat
 
