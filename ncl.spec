@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -295,6 +295,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 8 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-15
+- Try changing the udunits path in config/Project
+
 * Thu Dec 4 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-14
 - Actually apply udunits patch
 
