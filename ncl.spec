@@ -9,8 +9,8 @@ URL:            http://www.ncl.ucar.edu
 # You must register for a free account at http://www.earthsystemgrid.org/ before being able to download the source.
 Source0:        http://datanode.ucar.edu/data/xserve/ncl/5.0.0/binaries/source/ncl_ncarg_src-5.0.0.tar.gz
 Source1:        Site.local.ncl
-Source2:        ncl.csh
-Source3:        ncl.sh
+Source2:        ncarg.csh
+Source3:        ncarg.sh
 
 # ymake uses cpp with some defines on the command line to generate a 
 # Makefile which consists in:
@@ -145,7 +145,7 @@ sed -e 's;@prefix@;%{_prefix};' \
 
 #Setup the profile scripts
 cp %{SOURCE2} %{SOURCE3} .
-sed -i -e s,@LIB@,%{_lib},g ncl.csh ncl.sh
+sed -i -e s,@LIB@,%{_lib},g ncarg.csh ncarg.sh
 
 pushd ni/src/examples
 for file in */*.ncl; do
@@ -176,7 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 export NCARG=`pwd`
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
-install -m 0644 ncl.csh ncl.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 # Don't conflict with allegro-devel (generic API names)
 for manpage in $RPM_BUILD_ROOT%{_mandir}/man3/*
 do
@@ -196,7 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING Copyright README
-%{_sysconfdir}/profile.d/ncl.*sh
+%{_sysconfdir}/profile.d/ncarg.*sh
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile
