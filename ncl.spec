@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -9,6 +9,8 @@ URL:            http://www.ncl.ucar.edu
 # You must register for a free account at http://www.earthsystemgrid.org/ before being able to download the source.
 Source0:        http://datanode.ucar.edu/data/xserve/ncl/5.0.0/binaries/source/ncl_ncarg_src-5.0.0.tar.gz
 Source1:        Site.local.ncl
+Source2:        ncl.csh
+Source3:        ncl.sh
 
 # ymake uses cpp with some defines on the command line to generate a 
 # Makefile which consists in:
@@ -141,6 +143,10 @@ sed -e 's;@prefix@;%{_prefix};' \
  -e 's;@libdir@;%{_libdir};' \
  %{SOURCE1} > config/Site.local
 
+#Setup the profile scripts
+cp %{SOURCE2} %{SOURCE3} .
+sed -i -e s,@LIB@,%{_lib},g ncl.csh ncl.sh
+
 pushd ni/src/examples
 for file in */*.ncl; do
   sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("nclex") + "\1);' \
@@ -169,8 +175,8 @@ make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC" F77=gfortran F77_LD=gfortran\
 rm -rf $RPM_BUILD_ROOT
 export NCARG=`pwd`
 make install DESTDIR=$RPM_BUILD_ROOT
-#mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
-#install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+install -m 0644 ncl.csh ncl.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 # Don't conflict with allegro-devel (generic API names)
 for manpage in $RPM_BUILD_ROOT%{_mandir}/man3/*
 do
@@ -190,7 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING Copyright README
-#%{_sysconfdir}/profile.d/ncarg.*sh
+%{_sysconfdir}/profile.d/ncl.*sh
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile
@@ -295,6 +301,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Dec 12 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-16
+- Re-add profile.d startup scripts to set NCARG env variables
+
 * Mon Dec 8 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-15
 - Try changing the udunits path in config/Project
 
