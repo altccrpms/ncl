@@ -6,7 +6,7 @@
  NCLAPILIB	= -lNGncl
 -BLASLIB	        = -lblas_ncl
 -LAPACKLIB       = -llapack_ncl
-+BLASLIB	        = -lblas
++BLASLIB	        = -lcblas
 +LAPACKLIB       = -llapack
  SPHERELIB	= -lsphere3.1_dp
  FFTPACK5LIB	= -lfftpack5_dp
@@ -17,7 +17,7 @@
  NCLAPILIB	= _UseLib(-L$(NCLLIBSRC),-lnclapi)
 -BLASLIB         = _UseLib(-L$(BLASSRC),-lblas_ncl)
 -LAPACKLIB       = _UseLib(-L$(LAPACKSRC),-llapack_ncl)
-+BLASLIB         = _UseLib(-L%LIBDIR%/atlas,-lblas)
++BLASLIB         = _UseLib(-L%LIBDIR%/atlas,-lcblas)
 +LAPACKLIB       = _UseLib(-L%LIBDIR%/atlas,-llapack)
  SPHERELIB	= _UseLib(-L$(SPHERESRC),-lsphere3.1_dp)
  FFTPACK5LIB	= _UseLib(-L$(FFTPACK5SRC),-lfftpack5_dp)

@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -301,6 +301,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 15 2008 Deji Akingunola <dakingun@gmail.com> - 5.0.0-17
+- Rebuild for atlas-3.8.2
+
 * Fri Dec 12 2008 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-16
 - Re-add profile.d startup scripts to set NCARG env variables
 
