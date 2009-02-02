@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -285,7 +285,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ncarg/libnfp.a
 %{_libdir}/ncarg/libnfpfort.a
 %{_libdir}/ncarg/libsphere3.1_dp.a
-%{_libdir}/ncarg/ncarg/robj/
+%{_libdir}/ncarg/ncarg/
 %{_mandir}/man3/*.gz
 
 %files examples
@@ -301,6 +301,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb 2 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-18
+- Fix unowned directory (bug #483468)
+
 * Mon Dec 15 2008 Deji Akingunola <dakingun@gmail.com> - 5.0.0-17
 - Rebuild for atlas-3.8.2
 
