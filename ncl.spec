@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.0.0
-Release:        18%{?dist}
+Release:        19%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -54,6 +54,7 @@ BuildRequires:  g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
 BuildRequires:  udunits-devel
+Requires:       %{name}-common = %{version}-%{release}
 Requires:       udunits
 
 Provides:       ncarg = %{version}-%{release}
@@ -78,6 +79,16 @@ The software comes with a couple of useful command line tools:
     files to netCDF formatted files. 
 
 
+%package common
+Summary:        Common files for NCL and NCAR Graphics
+Group:          Applications/Engineering
+Requires:       %{name} = %{version}-%{release}
+BuildArch:      noarch
+
+%description common
+%{summary}.
+
+
 %package devel
 Summary:        Development files for NCL and NCAR Graphics
 Group:          Development/Libraries
@@ -95,6 +106,7 @@ Obsoletes:      ncarg-devel < %{version}-%{release}
 Summary:        Example programs and data using NCL
 Group:          Development/Libraries
 Requires:       %{name}-devel = %{version}-%{release}
+BuildArch:      noarch
 
 %description examples
 Example programs and data using NCL.
@@ -243,6 +255,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/tdpackdemo
 %{_bindir}/tgks0a
 %{_bindir}/tlocal
+
+%files common
+%defattr(-,root,root,-)
 %dir %{_datadir}/ncarg
 %{_datadir}/ncarg/colormaps/
 %{_datadir}/ncarg/data/
@@ -301,6 +316,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 24 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-19
+- Rebuild for gcc 4.4.0 and other changes
+- Move data files into noarch sub-package
+- Make examples sub-package noarch
+
 * Mon Feb 2 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-18
 - Fix unowned directory (bug #483468)
 
