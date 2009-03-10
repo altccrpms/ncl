@@ -1,13 +1,13 @@
 Name:           ncl
-Version:        5.0.0
-Release:        19%{?dist}
+Version:        5.1.0
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
 # You must register for a free account at http://www.earthsystemgrid.org/ before being able to download the source.
-Source0:        http://datanode.ucar.edu/data/xserve/ncl/5.0.0/binaries/source/ncl_ncarg_src-5.0.0.tar.gz
+Source0:        ncl_ncarg_src-%{version}.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
 Source3:        ncarg.sh
@@ -28,12 +28,8 @@ Source3:        ncarg.sh
 # Project, in NGENV_DESCRIPT.
 Patch0:         ncl-5.0.0-paths.patch
 Patch1:         ncarg-4.4.1-deps.patch
-Patch2:         ncarg-4.4.2-ppc64.patch
-Patch4:         ncl-5.0.0-triangle.patch
-Patch5:         ncl-5.0.0-flex.patch
-Patch6:         ncl-5.0.0-hdf.patch
+Patch2:         ncl-5.1.0-ppc64.patch
 Patch7:         ncl-5.0.0-atlas.patch
-Patch8:         ncl-5.0.0-png.patch
 Patch9:         ncl-5.0.0-wrapit.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
@@ -41,9 +37,8 @@ Patch10:        ncl-5.0.0-no_install_dep.patch
 # put install and build rules before script rules such that the default rule
 # is all
 Patch11:        ncl-5.0.0-build_n_scripts.patch
-Patch12:        ncl-5.0.0-netcdff.patch
-Patch13:        ncl-5.0.0-includes.patch
-Patch14:        ncl-5.0.0-uint32.patch
+Patch12:        ncl-5.1.0-netcdff.patch
+Patch13:        ncl-5.1.0-includes.patch
 # Use /etc/udunits.dat
 Patch15:        ncl-5.0.0-udunits.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -118,22 +113,12 @@ Example programs and data using NCL.
 %patch0 -p1 -b .paths
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
-%patch4 -p1 -b .triangle
-%patch5 -p1 -b .flex
-%patch6 -p1 -b .hdf
 %patch7 -p1 -b .atlas
-%patch8 -p1 -b .png
-%patch9 -p1 -b .wrapit
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
-%patch14 -p1 -b .uint32
 %patch15 -p1 -b .udunits
-
-#Move wrapit.c to wrapit77.c to avoid flex make rule issues
-#This works in combination with the wrapit patch
-mv ni/src/mkwrap/wrapit.c ni/src/mkwrap/wrapit77.c
 
 #Use ppc config if needed
 %ifarch ppc ppc64
@@ -295,7 +280,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ncarg/libncarg_ras.a
 %{_libdir}/ncarg/libncl.a
 %{_libdir}/ncarg/libnclapi.a
-%{_libdir}/ncarg/libnio.a
 %{_libdir}/ncarg/libngmath.a
 %{_libdir}/ncarg/libnfp.a
 %{_libdir}/ncarg/libnfpfort.a
@@ -316,6 +300,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 5 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.0-1
+- Update to 5.1.0
+- Rebase ppc64, netcdff patch
+- Drop triangle, flex, hdf, png, wrapit, uint32 patch upstreamed
+
 * Tue Feb 24 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.0.0-19
 - Rebuild for gcc 4.4.0 and other changes
 - Move data files into noarch sub-package
