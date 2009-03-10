@@ -30,7 +30,6 @@ Patch0:         ncl-5.0.0-paths.patch
 Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 Patch7:         ncl-5.0.0-atlas.patch
-Patch9:         ncl-5.0.0-wrapit.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -109,7 +108,6 @@ Example programs and data using NCL.
 
 %prep
 %setup -q -n ncl_ncarg-%{version}
-#%patch0 -p1 -b .rpmroot
 %patch0 -p1 -b .paths
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
