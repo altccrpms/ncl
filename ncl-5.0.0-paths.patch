@@ -110,15 +110,6 @@ diff -up ncl_ncarg-5.0.0/config/Project.paths ncl_ncarg-5.0.0/config/Project
  TESTSPATH		= $(LIBNCARGPATH)/$(TESTSDIR)
  TUTORIALPATH		= $(LIBNCARGPATH)/$(TUTORIALDIR)
  WWWPATH			= $(LIBNCARGPATH)/$(WWWDIR)
-@@ -272,7 +273,7 @@ USRRESFILE		= "~/.hluresfile"
- NCARGURL		= "ngurl"
- NCARGSITEFILE   = "ncargsite"
- 
--ROOTPATHCHECK		= "/lib/ncarg/fontcaps/font1"
-+ROOTPATHCHECK		= "/share/ncarg/fontcaps/font1"
- 
- /*
-  * This huge define is used to define all the Environment variables
 @@ -314,10 +315,11 @@ NGENV_DESCRIPT	= \
  		"usrresfile",NULL,NULL,$(USRRESFILE),NULL,	\
  		"gks_output",NULL,NULL,"gmeta",NULL,		\

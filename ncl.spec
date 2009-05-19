@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -172,6 +172,9 @@ export NCARG=`pwd`
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+# fontcaps and graphcaps are arch dependent
+mv $RPM_BUILD_ROOT%{_datadir}/ncarg/{font,graph}caps \
+   $RPM_BUILD_ROOT%{_libdir}/ncarg/
 # Don't conflict with allegro-devel (generic API names)
 for manpage in $RPM_BUILD_ROOT%{_mandir}/man3/*
 do
@@ -238,6 +241,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/tdpackdemo
 %{_bindir}/tgks0a
 %{_bindir}/tlocal
+%{_libdir}/ncarg/fontcaps/
+%{_libdir}/ncarg/graphcaps/
 
 %files common
 %defattr(-,root,root,-)
@@ -245,8 +250,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/colormaps/
 %{_datadir}/ncarg/data/
 %{_datadir}/ncarg/database/
-%{_datadir}/ncarg/fontcaps/
-%{_datadir}/ncarg/graphcaps/
 %{_datadir}/ncarg/grib2_codetables/
 %{_datadir}/ncarg/nclscripts/
 %{_datadir}/ncarg/ngwww/
@@ -298,6 +301,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue May 19 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.0-2
+- Set NCARG_NCARG to /usr/share/ncarg
+- Move fontcaps and graphcaps back to main arch dependent package
+
 * Thu Mar 5 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.0-1
 - Update to 5.1.0
 - Rebase ppc64, netcdff patch
