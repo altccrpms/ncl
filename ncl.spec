@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.1.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -26,7 +26,7 @@ Source3:        ncarg.sh
 #
 # install paths are set up in Project. Paths used in code are also in 
 # Project, in NGENV_DESCRIPT.
-Patch0:         ncl-5.0.0-paths.patch
+Patch0:         ncl-5.1.0-paths.patch
 Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 Patch7:         ncl-5.0.0-atlas.patch
@@ -142,13 +142,10 @@ sed -e 's;@prefix@;%{_prefix};' \
 cp %{SOURCE2} %{SOURCE3} .
 sed -i -e s,@LIB@,%{_lib},g ncarg.csh ncarg.sh
 
-pushd ni/src/examples
-for file in */*.ncl; do
-  sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("nclex") + "\1);' \
+sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("nclex") + "\1);' \
     -e 's;"\$NCARG_ROOT/lib/ncarg/\(data\|database\);ncargpath("\1") + ";' \
-   $file
-done
-popd
+    -e 's;\$NCARG_ROOT/lib/ncarg/nclscripts;$NCARG_ROOT/share/ncarg/nclscripts;' \
+    `find ni/src -name \*.ncl`
 
 
 %build
@@ -301,6 +298,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jul 7 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.0-4
+- Fixup more paths in shipped ncl scripts (bug #505240)
+
 * Tue May 26 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.0-3
 - Move database back to main arch dependent package
  
