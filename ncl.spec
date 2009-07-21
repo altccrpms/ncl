@@ -1,6 +1,6 @@
 Name:           ncl
-Version:        5.1.0
-Release:        4%{?dist}
+Version:        5.1.1
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -281,6 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ncarg/libngmath.a
 %{_libdir}/ncarg/libnfp.a
 %{_libdir}/ncarg/libnfpfort.a
+%{_libdir}/ncarg/libnio.a
 %{_libdir}/ncarg/libsphere3.1_dp.a
 %{_libdir}/ncarg/ncarg/
 %{_mandir}/man3/*.gz
@@ -298,6 +299,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jul 13 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.1-1
+- Update to 5.1.1
+
 * Tue Jul 7 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.0-4
 - Fixup more paths in shipped ncl scripts (bug #505240)
 

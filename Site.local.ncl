@@ -7,8 +7,9 @@
 #define IncSearch -I/usr/include/netcdf
 #define LibSearch -L@libdir@/hdf
 
-#define BuildV5D FALSE
-#define BuildHDFEOS FALSE
+#define BuildNetCDF4 0
+#define BuildV5D 0
+#define BuildHDFEOS 0
 #define BuildTRIANGLE 0
 #define V5Dlib
-#define BuildDODS TRUE
+#define BuildDODS 1
