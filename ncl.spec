@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -299,6 +299,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jul 23 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.1-2
+- Rebuild for libdap 3.9.3
+
 * Mon Jul 13 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.1-1
 - Update to 5.1.1
 
