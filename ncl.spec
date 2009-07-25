@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.1.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -299,6 +299,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Jul 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
 * Thu Jul 23 2009 - Orion Poplawski <orion@cora.nwra.com> - 5.1.1-2
 - Rebuild for libdap 3.9.3
 
