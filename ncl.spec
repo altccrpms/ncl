@@ -77,7 +77,9 @@ The software comes with a couple of useful command line tools:
 Summary:        Common files for NCL and NCAR Graphics
 Group:          Applications/Engineering
 Requires:       %{name} = %{version}-%{release}
+%if 0%{?fedora} > 9 || 0%{?rhel} > 5
 BuildArch:      noarch
+%endif
 
 %description common
 %{summary}.
@@ -100,7 +102,9 @@ Obsoletes:      ncarg-devel < %{version}-%{release}
 Summary:        Example programs and data using NCL
 Group:          Development/Libraries
 Requires:       %{name}-devel = %{version}-%{release}
+%if 0%{?fedora} > 9 || 0%{?rhel} > 5
 BuildArch:      noarch
+%endif
 
 %description examples
 Example programs and data using NCL.
