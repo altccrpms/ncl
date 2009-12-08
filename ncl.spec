@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.1.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -42,7 +42,8 @@ Patch13:        ncl-5.1.0-includes.patch
 Patch15:        ncl-5.0.0-udunits.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel, hdf-devel >= 4.2r2, libjpeg-devel
+BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
+BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
 BuildRequires:  g2clib-static, g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
@@ -303,7 +304,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue Dec  8 2009 Michael Schwendt <mschwendt@fedoraproject.org> - 5.1.1-4
+* Tue Dec  8 2009 Michael Schwendt <mschwendt@fedoraproject.org> - 5.1.1-5
+- Same as below with hdf-static
 - Explicitly BR g2clib-static in accordance with the Packaging
   Guidelines (g2clib-devel is still static-only).
 
