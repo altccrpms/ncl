@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.1.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -43,7 +43,7 @@ Patch15:        ncl-5.0.0-udunits.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel, hdf-devel >= 4.2r2, libjpeg-devel
-BuildRequires:  g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
+BuildRequires:  g2clib-static, g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
@@ -303,6 +303,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec  8 2009 Michael Schwendt <mschwendt@fedoraproject.org> - 5.1.1-4
+- Explicitly BR g2clib-static in accordance with the Packaging
+  Guidelines (g2clib-devel is still static-only).
+
 * Sat Jul 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
