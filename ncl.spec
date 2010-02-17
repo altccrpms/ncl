@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.1.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -29,6 +29,8 @@ Source3:        ncarg.sh
 Patch0:         ncl-5.1.0-paths.patch
 Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
+# Add needed -lm to ictrans build
+Patch3:         ncl-5.1.1-libs.patch
 Patch7:         ncl-5.0.0-atlas.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
@@ -116,6 +118,7 @@ Example programs and data using NCL.
 %patch0 -p1 -b .paths
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
+%patch3 -p1 -b .libs
 %patch7 -p1 -b .atlas
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
@@ -304,6 +307,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 16 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.1.1-6
+- Add patch to fix FTBFS bug #564856
+
 * Tue Dec  8 2009 Michael Schwendt <mschwendt@fedoraproject.org> - 5.1.1-5
 - Same as below with hdf-static
 - Explicitly BR g2clib-static in accordance with the Packaging
