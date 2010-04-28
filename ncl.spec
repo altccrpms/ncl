@@ -1,12 +1,12 @@
 Name:           ncl
-Version:        5.1.1
-Release:        6%{?dist}
+Version:        5.2.0
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
-# You must register for a free account at http://www.earthsystemgrid.org/ before being able to download the source.
+# You must register for a free account at http://esg.ucar.edu/ before being able to download the source.
 Source0:        ncl_ncarg_src-%{version}.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
@@ -29,8 +29,8 @@ Source3:        ncarg.sh
 Patch0:         ncl-5.1.0-paths.patch
 Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
-# Add needed -lm to ictrans build
-Patch3:         ncl-5.1.1-libs.patch
+# Add needed -lm to ictrans build, remove unneeded -lidn -ldl from ncl
+Patch3:         ncl-5.2.0-libs.patch
 Patch7:         ncl-5.0.0-atlas.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
@@ -50,9 +50,9 @@ BuildRequires:  g2clib-static, g2clib-devel, libnc-dap-devel, librx-devel, atlas
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
-BuildRequires:  udunits-devel
+BuildRequires:  udunits2-devel
 Requires:       %{name}-common = %{version}-%{release}
-Requires:       udunits
+Requires:       udunits2
 
 Provides:       ncarg = %{version}-%{release}
 Obsoletes:      ncarg < %{version}-%{release}
@@ -125,6 +125,8 @@ Example programs and data using NCL.
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch15 -p1 -b .udunits
+#Spurrious exec permissions
+find -name '*.[fh]' -exec chmod -x {} +
 
 #Use ppc config if needed
 %ifarch ppc ppc64
@@ -199,7 +201,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING Copyright README
-%{_sysconfdir}/profile.d/ncarg.*sh
+%config(noreplace) %{_sysconfdir}/profile.d/ncarg.*sh
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile
@@ -256,6 +258,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/colormaps/
 %{_datadir}/ncarg/data/
 %{_datadir}/ncarg/grib2_codetables/
+%{_datadir}/ncarg/grib2_codetables.previous/
 %{_datadir}/ncarg/nclscripts/
 %{_datadir}/ncarg/ngwww/
 %{_datadir}/ncarg/sysresfile/
@@ -307,6 +310,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Apr 28 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.0-1
+- Update to 5.2.0
+- Update libs patch
+- Fixup profile script packaging
+
 * Tue Feb 16 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.1.1-6
 - Add patch to fix FTBFS bug #564856
 
