@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -46,7 +46,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
-BuildRequires:  g2clib-static, g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
+BuildRequires:  g2clib-static, g2clib-devel, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
@@ -310,6 +310,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jul 1 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.0-2
+- Drop BR libnc-dap and update lib patch to remove unneeded libraries
+
 * Wed Apr 28 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.0-1
 - Update to 5.2.0
 - Update libs patch
