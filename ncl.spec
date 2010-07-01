@@ -1,12 +1,12 @@
 Name:           ncl
-Version:        5.1.1
-Release:        3%{?dist}
+Version:        5.2.0
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
-# You must register for a free account at http://www.earthsystemgrid.org/ before being able to download the source.
+# You must register for a free account at http://esg.ucar.edu/ before being able to download the source.
 Source0:        ncl_ncarg_src-%{version}.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
@@ -29,6 +29,8 @@ Source3:        ncarg.sh
 Patch0:         ncl-5.1.0-paths.patch
 Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
+# Add needed -lm to ictrans build, remove unneeded -lidn -ldl from ncl
+Patch3:         ncl-5.2.0-libs.patch
 Patch7:         ncl-5.0.0-atlas.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
@@ -42,14 +44,15 @@ Patch13:        ncl-5.1.0-includes.patch
 Patch15:        ncl-5.0.0-udunits.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel, hdf-devel >= 4.2r2, libjpeg-devel
-BuildRequires:  g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
+BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
+BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
+BuildRequires:  g2clib-static, g2clib-devel, libnc-dap-devel, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
-BuildRequires:  udunits-devel
+BuildRequires:  udunits2-devel
 Requires:       %{name}-common = %{version}-%{release}
-Requires:       udunits
+Requires:       udunits2
 
 Provides:       ncarg = %{version}-%{release}
 Obsoletes:      ncarg < %{version}-%{release}
@@ -115,12 +118,15 @@ Example programs and data using NCL.
 %patch0 -p1 -b .paths
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
+%patch3 -p1 -b .libs
 %patch7 -p1 -b .atlas
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch15 -p1 -b .udunits
+#Spurrious exec permissions
+find -name '*.[fh]' -exec chmod -x {} +
 
 #Use ppc config if needed
 %ifarch ppc ppc64
@@ -195,7 +201,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING Copyright README
-%{_sysconfdir}/profile.d/ncarg.*sh
+%config(noreplace) %{_sysconfdir}/profile.d/ncarg.*sh
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile
@@ -252,6 +258,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/colormaps/
 %{_datadir}/ncarg/data/
 %{_datadir}/ncarg/grib2_codetables/
+%{_datadir}/ncarg/grib2_codetables.previous/
 %{_datadir}/ncarg/nclscripts/
 %{_datadir}/ncarg/ngwww/
 %{_datadir}/ncarg/sysresfile/
@@ -303,6 +310,19 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Apr 28 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.0-1
+- Update to 5.2.0
+- Update libs patch
+- Fixup profile script packaging
+
+* Tue Feb 16 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.1.1-6
+- Add patch to fix FTBFS bug #564856
+
+* Tue Dec  8 2009 Michael Schwendt <mschwendt@fedoraproject.org> - 5.1.1-5
+- Same as below with hdf-static
+- Explicitly BR g2clib-static in accordance with the Packaging
+  Guidelines (g2clib-devel is still static-only).
+
 * Sat Jul 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
