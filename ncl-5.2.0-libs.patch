@@ -18,7 +18,7 @@ diff -up ncl_ncarg-5.2.0/ni/src/ncl/yMakefile.libs ncl_ncarg-5.2.0/ni/src/ncl/yM
  DODS_LIBS	= -lnc-dap -ldap -ldapclient -lcurl -lxml2 -lpthread -lssl
  #elif defined(linux)
 -DODS_LIBS	= -lnc-dap -ldap -ldapclient -lcurl -lrx -lxml2 -lpthread -lidn -ldl
-+DODS_LIBS	= -lnc-dap -ldap -ldapclient -lcurl -lrx -lxml2 -lpthread
++DODS_LIBS	= -lcurl -lrx -lpthread
  #else
  DODS_LIBS	= -lnc-dap -ldap -ldapclient -lcurl -lrx -lxml2 -lpthread -lssl
  #endif
