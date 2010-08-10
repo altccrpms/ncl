@@ -1,6 +1,6 @@
 Name:           ncl
-Version:        5.2.0
-Release:        2%{?dist}
+Version:        5.2.1
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -41,7 +41,7 @@ Patch11:        ncl-5.0.0-build_n_scripts.patch
 Patch12:        ncl-5.1.0-netcdff.patch
 Patch13:        ncl-5.1.0-includes.patch
 # Use /etc/udunits.dat
-Patch15:        ncl-5.0.0-udunits.patch
+Patch15:        ncl-5.2.1-udunits.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
@@ -310,6 +310,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 10 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-1
+- Update to 5.2.1
+- Update udunits patch
+
 * Thu Jul 1 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.0-2
 - Drop BR libnc-dap and update lib patch to remove unneeded libraries
 
