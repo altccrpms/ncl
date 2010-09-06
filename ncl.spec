@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -42,6 +42,8 @@ Patch12:        ncl-5.1.0-netcdff.patch
 Patch13:        ncl-5.1.0-includes.patch
 # Use /etc/udunits.dat
 Patch15:        ncl-5.2.1-udunits.patch
+# Add Fedora secondary arches
+Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
@@ -125,6 +127,7 @@ Example programs and data using NCL.
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch15 -p1 -b .udunits
+%patch16 -p1 -b .secondary
 #Spurrious exec permissions
 find -name '*.[fh]' -exec chmod -x {} +
 
@@ -310,6 +313,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 6 2010 - Dan Horák <dan[at]danny.cz> - 5.2.1-2
+- Recognize Fedora secondary architectures
+
 * Tue Aug 10 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-1
 - Update to 5.2.1
 - Update udunits patch
