@@ -1,0 +1,13 @@
+diff -up ncl_ncarg-5.2.1/config/ymake.secondary ncl_ncarg-5.2.1/config/ymake
+--- ncl_ncarg-5.2.1/config/ymake.secondary	2010-09-06 10:16:02.587814170 -0400
++++ ncl_ncarg-5.2.1/config/ymake	2010-09-06 10:38:59.887472612 -0400
+@@ -373,6 +373,9 @@ case    Linux:
+         case    i*64:
+         case    x*64:
+         case    ppc*:
++        case    s390*:
++        case    sparc*:
++        case    arm*:
+         case    alpha:
+             set model   = $mach
+             set arch    = $mach
