@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -182,14 +182,20 @@ install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 # database, fontcaps, and graphcaps are arch dependent
 mv $RPM_BUILD_ROOT%{_datadir}/ncarg/{database,{font,graph}caps} \
    $RPM_BUILD_ROOT%{_libdir}/ncarg/
+# Use system udunits
+rm -r $RPM_BUILD_ROOT%{_datadir}/ncarg/udunits
+# Compat links for what is left
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/ncarg
+for x in $RPM_BUILD_ROOT%{_datadir}/ncarg/*
+do
+  ln -s ../../share/ncarg/$(basename $x) $RPM_BUILD_ROOT%{_prefix}/lib/ncarg/
+done
 # Don't conflict with allegro-devel (generic API names)
 for manpage in $RPM_BUILD_ROOT%{_mandir}/man3/*
 do
    manname=`basename $manpage`
    mv $manpage $RPM_BUILD_ROOT%{_mandir}/man3/%{name}_$manname
 done
-# Use system udunits
-rm -r $RPM_BUILD_ROOT%{_datadir}/ncarg/udunits
 # Remove $RPM_BUILD_ROOT from MakeNcl
 #sed -i -e s,$RPM_BUILD_ROOT,,g $RPM_BUILD_ROOT%{_bindir}/MakeNcl
 
@@ -263,6 +269,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/ngwww/
 %{_datadir}/ncarg/sysresfile/
 %{_datadir}/ncarg/xapp/
+%dir %{_prefix}/lib/ncarg
+%{_prefix}/lib/ncarg/colormaps
+%{_prefix}/lib/ncarg/data
+%{_prefix}/lib/ncarg/grib2_codetables
+%{_prefix}/lib/ncarg/grib2_codetables.previous
+%{_prefix}/lib/ncarg/nclscripts
+%{_prefix}/lib/ncarg/ngwww
+%{_prefix}/lib/ncarg/sysresfile
+%{_prefix}/lib/ncarg/xapp
 %{_mandir}/man1/*.gz
 %{_mandir}/man5/*.gz
 %{_bindir}/scrip_check_input
@@ -307,9 +322,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/resfiles/
 %{_datadir}/ncarg/tests/
 %{_datadir}/ncarg/tutorial/
+%{_prefix}/lib/ncarg/examples
+%{_prefix}/lib/ncarg/hluex
+%{_prefix}/lib/ncarg/nclex
+%{_prefix}/lib/ncarg/resfiles
+%{_prefix}/lib/ncarg/tests
+%{_prefix}/lib/ncarg/tutorial
 
 
 %changelog
+* Mon Nov 22 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-2
+- Add compatibility links to /usr/lib/ncarg
+
 * Tue Aug 10 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-1
 - Update to 5.2.1
 - Update udunits patch
