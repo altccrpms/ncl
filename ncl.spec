@@ -1,6 +1,6 @@
 Name:           ncl
-Version:        5.2.0
-Release:        2%{?dist}
+Version:        5.2.1
+Release:        4%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -41,7 +41,9 @@ Patch11:        ncl-5.0.0-build_n_scripts.patch
 Patch12:        ncl-5.1.0-netcdff.patch
 Patch13:        ncl-5.1.0-includes.patch
 # Use /etc/udunits.dat
-Patch15:        ncl-5.0.0-udunits.patch
+Patch15:        ncl-5.2.1-udunits.patch
+# Add Fedora secondary arches
+Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
@@ -49,7 +51,7 @@ BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
 BuildRequires:  g2clib-static, g2clib-devel, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
-BuildRequires:  byacc, flex
+BuildRequires:  byacc, flex, flex-static
 BuildRequires:  udunits2-devel
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       udunits2
@@ -125,6 +127,7 @@ Example programs and data using NCL.
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch15 -p1 -b .udunits
+%patch16 -p1 -b .secondary
 #Spurrious exec permissions
 find -name '*.[fh]' -exec chmod -x {} +
 
@@ -182,14 +185,20 @@ install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 # database, fontcaps, and graphcaps are arch dependent
 mv $RPM_BUILD_ROOT%{_datadir}/ncarg/{database,{font,graph}caps} \
    $RPM_BUILD_ROOT%{_libdir}/ncarg/
+# Use system udunits
+rm -r $RPM_BUILD_ROOT%{_datadir}/ncarg/udunits
+# Compat links for what is left
+mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/ncarg
+for x in $RPM_BUILD_ROOT%{_datadir}/ncarg/*
+do
+  ln -s ../../share/ncarg/$(basename $x) $RPM_BUILD_ROOT%{_prefix}/lib/ncarg/
+done
 # Don't conflict with allegro-devel (generic API names)
 for manpage in $RPM_BUILD_ROOT%{_mandir}/man3/*
 do
    manname=`basename $manpage`
    mv $manpage $RPM_BUILD_ROOT%{_mandir}/man3/%{name}_$manname
 done
-# Use system udunits
-rm -r $RPM_BUILD_ROOT%{_datadir}/ncarg/udunits
 # Remove $RPM_BUILD_ROOT from MakeNcl
 #sed -i -e s,$RPM_BUILD_ROOT,,g $RPM_BUILD_ROOT%{_bindir}/MakeNcl
 
@@ -263,6 +272,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/ngwww/
 %{_datadir}/ncarg/sysresfile/
 %{_datadir}/ncarg/xapp/
+%dir %{_prefix}/lib/ncarg
+%{_prefix}/lib/ncarg/colormaps
+%{_prefix}/lib/ncarg/data
+%{_prefix}/lib/ncarg/grib2_codetables
+%{_prefix}/lib/ncarg/grib2_codetables.previous
+%{_prefix}/lib/ncarg/nclscripts
+%{_prefix}/lib/ncarg/ngwww
+%{_prefix}/lib/ncarg/sysresfile
+%{_prefix}/lib/ncarg/xapp
 %{_mandir}/man1/*.gz
 %{_mandir}/man5/*.gz
 %{_bindir}/scrip_check_input
@@ -307,9 +325,28 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/resfiles/
 %{_datadir}/ncarg/tests/
 %{_datadir}/ncarg/tutorial/
+%{_prefix}/lib/ncarg/examples
+%{_prefix}/lib/ncarg/hluex
+%{_prefix}/lib/ncarg/nclex
+%{_prefix}/lib/ncarg/resfiles
+%{_prefix}/lib/ncarg/tests
+%{_prefix}/lib/ncarg/tutorial
 
 
 %changelog
+* Mon Nov 22 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-4
+- Add BR flex-static
+
+* Mon Nov 22 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-3
+- Add compatibility links to /usr/lib/ncarg
+
+* Mon Sep 6 2010 - Dan Horák <dan[at]danny.cz> - 5.2.1-2
+- Recognize Fedora secondary architectures
+
+* Tue Aug 10 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-1
+- Update to 5.2.1
+- Update udunits patch
+
 * Thu Jul 1 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.0-2
 - Drop BR libnc-dap and update lib patch to remove unneeded libraries
 
