@@ -51,7 +51,10 @@ BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
 BuildRequires:  g2clib-static, g2clib-devel, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
-BuildRequires:  byacc, flex, flex-static
+BuildRequires:  byacc, flex
+%if %{?fedora} >= 13
+BuildRequires:  flex-static
+%endif
 BuildRequires:  udunits2-devel
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       udunits2
@@ -334,6 +337,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Dec 10 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-5
+- No flex-static in EL
+
 * Mon Nov 22 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-4
 - Add BR flex-static
 
