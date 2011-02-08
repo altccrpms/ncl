@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.2.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -337,6 +337,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.2.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Fri Dec 10 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-5
 - No flex-static in EL
 
