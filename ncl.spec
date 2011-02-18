@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        5.2.1
-Release:        4%{?dist}
+Release:        6%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -48,7 +48,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
-BuildRequires:  g2clib-static, g2clib-devel, librx-devel, atlas-devel
+BuildRequires:  g2clib-static, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
@@ -337,6 +337,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 18 2011 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-6
+- Rebuild for new g2clib - fix grib handling on 64-bit machines
+
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.2.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Fri Dec 10 2010 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-5
 - No flex-static in EL
 
