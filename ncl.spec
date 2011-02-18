@@ -52,7 +52,7 @@ BuildRequires:  g2clib-static, librx-devel, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
-%if %{?fedora} >= 13
+%if 0%{?fedora} >= 13
 BuildRequires:  flex-static
 %endif
 BuildRequires:  udunits2-devel
