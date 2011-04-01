@@ -1,13 +1,13 @@
 Name:           ncl
-Version:        5.2.1
-Release:        6%{?dist}
+Version:        6.0.0
+Release:        0.1.beta%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
 # You must register for a free account at http://esg.ucar.edu/ before being able to download the source.
-Source0:        ncl_ncarg_src-%{version}.tar.gz
+Source0:        ncl_ncarg-%{version}-beta.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
 Source3:        ncarg.sh
@@ -47,6 +47,8 @@ Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
+BuildRequires:  cairo-devel
+BuildRequires:  gdal-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
 BuildRequires:  g2clib-static, librx-devel, atlas-devel
 # imake needed for makedepend
@@ -119,7 +121,7 @@ Example programs and data using NCL.
 
 
 %prep
-%setup -q -n ncl_ncarg-%{version}
+%setup -q -n ncl_ncarg-%{version}-beta
 %patch0 -p1 -b .paths
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
@@ -304,9 +306,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ncarg/libcgm.a
 %{_libdir}/ncarg/libfftpack5_dp.a
 %{_libdir}/ncarg/libhlu.a
+%{_libdir}/ncarg/libhlu_cairo.a
 %{_libdir}/ncarg/libncarg.a
 %{_libdir}/ncarg/libncarg_c.a
 %{_libdir}/ncarg/libncarg_gks.a
+%{_libdir}/ncarg/libncarg_gks_cairo.a
 %{_libdir}/ncarg/libncarg_ras.a
 %{_libdir}/ncarg/libncl.a
 %{_libdir}/ncarg/libnclapi.a
@@ -337,6 +341,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 31 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-0.1.beta
+- Update to 6.0.0-beta
+- Enable cairo and gdal support
+
 * Fri Feb 18 2011 - Orion Poplawski <orion@cora.nwra.com> - 5.2.1-6
 - Rebuild for new g2clib - fix grib handling on 64-bit machines
 
