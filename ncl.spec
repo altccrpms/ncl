@@ -204,8 +204,6 @@ do
    manname=`basename $manpage`
    mv $manpage $RPM_BUILD_ROOT%{_mandir}/man3/%{name}_$manname
 done
-# Remove $RPM_BUILD_ROOT from MakeNcl
-#sed -i -e s,$RPM_BUILD_ROOT,,g $RPM_BUILD_ROOT%{_bindir}/MakeNcl
 
 
 %clean
