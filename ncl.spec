@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.0.0
-Release:        0.1.beta%{?dist}
+Release:        0.2.beta%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -339,6 +339,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed May 18 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-0.2.beta
+- Rebuild for hdf5 1.8.7
+
 * Thu Mar 31 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-0.1.beta
 - Update to 6.0.0-beta
 - Enable cairo and gdal support
