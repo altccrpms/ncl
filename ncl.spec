@@ -1,13 +1,13 @@
 Name:           ncl
 Version:        6.0.0
-Release:        0.2.beta%{?dist}
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
 # You must register for a free account at http://esg.ucar.edu/ before being able to download the source.
-Source0:        ncl_ncarg-%{version}-beta.tar.gz
+Source0:        ncl_ncarg-%{version}.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
 Source3:        ncarg.sh
@@ -121,7 +121,7 @@ Example programs and data using NCL.
 
 
 %prep
-%setup -q -n ncl_ncarg-%{version}-beta
+%setup -q -n ncl_ncarg-%{version}
 %patch0 -p1 -b .paths
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
@@ -339,6 +339,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Sep 1 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-1
+- Update to 6.0.0 final
+
 * Wed May 18 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-0.2.beta
 - Rebuild for hdf5 1.8.7
 
