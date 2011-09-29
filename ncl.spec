@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -40,8 +40,6 @@ Patch10:        ncl-5.0.0-no_install_dep.patch
 Patch11:        ncl-5.0.0-build_n_scripts.patch
 Patch12:        ncl-5.1.0-netcdff.patch
 Patch13:        ncl-5.1.0-includes.patch
-# Use /etc/udunits.dat
-Patch15:        ncl-5.2.1-udunits.patch
 # Add Fedora secondary arches
 Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -131,7 +129,6 @@ Example programs and data using NCL.
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
-%patch15 -p1 -b .udunits
 %patch16 -p1 -b .secondary
 #Spurrious exec permissions
 find -name '*.[fh]' -exec chmod -x {} +
@@ -190,14 +187,15 @@ install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 # database, fontcaps, and graphcaps are arch dependent
 mv $RPM_BUILD_ROOT%{_datadir}/ncarg/{database,{font,graph}caps} \
    $RPM_BUILD_ROOT%{_libdir}/ncarg/
-# Use system udunits
-rm -r $RPM_BUILD_ROOT%{_datadir}/ncarg/udunits
 # Compat links for what is left
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/ncarg
 for x in $RPM_BUILD_ROOT%{_datadir}/ncarg/*
 do
   ln -s ../../share/ncarg/$(basename $x) $RPM_BUILD_ROOT%{_prefix}/lib/ncarg/
 done
+# Use system udunits
+rm -r $RPM_BUILD_ROOT%{_datadir}/ncarg/udunits
+ln -s ../udunits $RPM_BUILD_ROOT%{_datadir}/ncarg/
 # Don't conflict with allegro-devel (generic API names)
 for manpage in $RPM_BUILD_ROOT%{_mandir}/man3/*
 do
@@ -274,6 +272,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/nclscripts/
 %{_datadir}/ncarg/ngwww/
 %{_datadir}/ncarg/sysresfile/
+%{_datadir}/ncarg/udunits
 %{_datadir}/ncarg/xapp/
 %dir %{_prefix}/lib/ncarg
 %{_prefix}/lib/ncarg/colormaps
@@ -283,6 +282,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/ncarg/nclscripts
 %{_prefix}/lib/ncarg/ngwww
 %{_prefix}/lib/ncarg/sysresfile
+%{_prefix}/lib/ncarg/udunits
 %{_prefix}/lib/ncarg/xapp
 %{_mandir}/man1/*.gz
 %{_mandir}/man5/*.gz
@@ -339,6 +339,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Sep 29 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-2
+- Use system udunits by linking it into where ncl expects it, drop
+  udunits patch.  Fixes bug 742307.
+
 * Thu Sep 1 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-1
 - Update to 6.0.0 final
 
