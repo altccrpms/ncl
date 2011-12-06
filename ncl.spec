@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -339,6 +339,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 06 2011 Adam Jackson <ajax@redhat.com> - 6.0.0-3
+- Rebuild for new libpng
+
 * Thu Sep 29 2011 - Orion Poplawski <orion@cora.nwra.com> - 6.0.0-2
 - Use system udunits by linking it into where ncl expects it, drop
   udunits patch.  Fixes bug 742307.
