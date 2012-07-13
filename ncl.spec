@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.0.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -31,6 +31,8 @@ Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 # Add needed -lm to ictrans build, remove unneeded -lidn -ldl from ncl
 Patch3:         ncl-5.2.0-libs.patch
+# Patch to fix xwd driver on 64-bit (bug 839707)
+Patch4:         ncl-xwd.patch
 Patch7:         ncl-5.0.0-atlas.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
@@ -124,6 +126,7 @@ Example programs and data using NCL.
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
+%patch4 -p1 -b .xwd
 %patch7 -p1 -b .atlas
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
@@ -339,6 +342,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jul 13 2012 Orion Poplawski <orion@cora.nwra.com> - 6.0.0-5
+- Add patch to fix xwd driver on 64-bit (bug 839707)
+
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.0.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
