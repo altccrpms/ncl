@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.0.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -29,8 +29,8 @@ Source3:        ncarg.sh
 Patch0:         ncl-5.1.0-paths.patch
 Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
-# Add needed -lm to ictrans build, remove unneeded -lidn -ldl from ncl
-Patch3:         ncl-5.2.0-libs.patch
+# Add needed -lm to ictrans build, remove unneeded -lrx -lidn -ldl from ncl
+Patch3:         ncl-libs.patch
 # Patch to fix xwd driver on 64-bit (bug 839707)
 Patch4:         ncl-xwd.patch
 Patch7:         ncl-5.0.0-atlas.patch
@@ -50,7 +50,7 @@ BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
 BuildRequires:  cairo-devel
 BuildRequires:  gdal-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
-BuildRequires:  g2clib-static, librx-devel, atlas-devel
+BuildRequires:  g2clib-static, atlas-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
@@ -176,7 +176,7 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 
 #make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -Werror-implicit-function-declaration" F77=gfortran F77_LD=gfortran\
 
-make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC" F77=gfortran F77_LD=gfortran\
+make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing" F77=gfortran F77_LD=gfortran\
  CTOFLIBS="-lgfortran" FCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-second-underscore -fno-range-check" \
  COPT= FOPT=
 
@@ -342,6 +342,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jul 17 2012 Orion Poplawski <orion@cora.nwra.com> - 6.0.0-6
+- Don't link against librx, was causing memory corruption
+- Compile with -fno-strict-aliasing for now
+
 * Fri Jul 13 2012 Orion Poplawski <orion@cora.nwra.com> - 6.0.0-5
 - Add patch to fix xwd driver on 64-bit (bug 839707)
 
