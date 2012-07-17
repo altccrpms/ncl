@@ -16,7 +16,6 @@
 #define BuildHDFEOS 0
 #define BuildHDFEOS5 0
 #define BuildTRIANGLE 0
-#define BuildDODS 1
 #define HDFlib -lmfhdf -ldf -ljpeg -lz
 #define HDF5lib -lhdf5_hl -lhdf5
 #define BuildUdunits 1
