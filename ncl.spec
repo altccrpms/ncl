@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.0.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -342,6 +342,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jul 20 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.0.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Mon Jul 17 2012 Orion Poplawski <orion@cora.nwra.com> - 6.0.0-6
 - Don't link against librx, was causing memory corruption
 - Compile with -fno-strict-aliasing for now
