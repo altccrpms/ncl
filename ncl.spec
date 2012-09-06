@@ -67,7 +67,7 @@ Patch13:        ncl-5.1.0-includes.patch
 Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  /bin/csh, netcdf%{?_cc_name_suffic}-devel
+BuildRequires:  /bin/csh, netcdf%{?_cc_name_suffix}-devel
 BuildRequires:  cairo-devel
 BuildRequires:  gdal-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
@@ -84,8 +84,9 @@ Requires:       udunits2
 # AltCCRPMS
 Requires:      environment-modules
 
-Provides:       ncarg%{?_cc_name_suffic} = %{version}-%{release}
-Obsoletes:      ncarg%{?_cc_name_suffic} < %{version}-%{release}
+Provides:       ncarg%{?_cc_name_suffix} = %{version}-%{release}
+Obsoletes:      ncarg%{?_cc_name_suffix} < %{version}-%{release}
+Provides:       %{shortname}%{?_cc_name_suffix} = %{version}-%{release}
 
 
 %description
