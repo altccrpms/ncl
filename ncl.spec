@@ -1,4 +1,23 @@
-Name:           ncl
+# AltCCRPMS
+%global _prefix /opt/%{name}/%{version}
+%global _sysconfdir %{_prefix}/etc
+%global _defaultdocdir %{_prefix}/share/doc
+%global _infodir %{_prefix}/share/info
+%global _mandir %{_prefix}/share/man
+
+%global _cc_name intel
+%global _cc_name_suffix -%{_cc_name}
+
+#We don't want to be beholden to the proprietary libraries
+%global    _use_internal_dependency_generator 0
+%global    __find_requires %{nil}
+
+# Non gcc compilers don't generate build ids
+%undefine _missing_build_ids_terminate_build
+
+%global shortname ncl
+
+Name:           ncl60%{?_cc_name_suffix}
 Version:        6.0.0
 Release:        7%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
@@ -9,8 +28,8 @@ URL:            http://www.ncl.ucar.edu
 # You must register for a free account at http://esg.ucar.edu/ before being able to download the source.
 Source0:        ncl_ncarg-%{version}.tar.gz
 Source1:        Site.local.ncl
-Source2:        ncarg.csh
-Source3:        ncarg.sh
+Source2:        %{shortname}.module.in
+
 
 # ymake uses cpp with some defines on the command line to generate a 
 # Makefile which consists in:
@@ -33,6 +52,8 @@ Patch2:         ncl-5.1.0-ppc64.patch
 Patch3:         ncl-libs.patch
 # Patch to fix xwd driver on 64-bit (bug 839707)
 Patch4:         ncl-xwd.patch
+# Upstream patch to NclDataDefs.h to fix intel compile error
+Patch5:         ncl-compound.patch
 Patch7:         ncl-5.0.0-atlas.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
@@ -46,7 +67,7 @@ Patch13:        ncl-5.1.0-includes.patch
 Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
+BuildRequires:  /bin/csh, netcdf%{?_cc_name_suffic}-devel
 BuildRequires:  cairo-devel
 BuildRequires:  gdal-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
@@ -60,9 +81,11 @@ BuildRequires:  flex-static
 BuildRequires:  udunits2-devel
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       udunits2
+# AltCCRPMS
+Requires:      environment-modules
 
-Provides:       ncarg = %{version}-%{release}
-Obsoletes:      ncarg < %{version}-%{release}
+Provides:       ncarg%{?_cc_name_suffic} = %{version}-%{release}
+Obsoletes:      ncarg%{?_cc_name_suffic} < %{version}-%{release}
 
 
 %description
@@ -127,6 +150,7 @@ Example programs and data using NCL.
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
 %patch4 -p1 -b .xwd
+%patch5 -p1 -b .compound
 %patch7 -p1 -b .atlas
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
@@ -145,7 +169,7 @@ cp config/LINUX.ppc32.GNU config/LINUX
 sed -i -e '/StdDefines/s/-DSYSV/-D_ISOC99_SOURCE/' config/LINUX
 
 #Fixup libdir for atlas lib locations
-sed -i -e s,%LIBDIR%,%{_libdir}, config/Project
+sed -i -e s,%LIB%,%{_lib}, config/Project
 
 rm -rf external/blas external/lapack
 
@@ -154,11 +178,8 @@ sed -e 's;@prefix@;%{_prefix};' \
  -e 's;@mandir@;%{_mandir};' \
  -e 's;@datadir@;%{_datadir};' \
  -e 's;@libdir@;%{_libdir};' \
+ -e 's;@lib@;%{_lib};' \
  %{SOURCE1} > config/Site.local
-
-#Setup the profile scripts
-cp %{SOURCE2} %{SOURCE3} .
-sed -i -e s,@LIB@,%{_lib},g ncarg.csh ncarg.sh
 
 sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("nclex") + "\1);' \
     -e 's;"\$NCARG_ROOT/lib/ncarg/\(data\|database\);ncargpath("\1") + ";' \
@@ -174,10 +195,9 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 # (cd ./config; make -f Makefile.ini clean all)
 # ./config/ymake -config ./config -Curdir . -Topdir .
 
-#make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -Werror-implicit-function-declaration" F77=gfortran F77_LD=gfortran\
-
-make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing" F77=gfortran F77_LD=gfortran\
- CTOFLIBS="-lgfortran" FCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-second-underscore -fno-range-check" \
+module load hdf5%{?_cc_name_suffix}
+make Build CCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" CC=icc CC_LD=icc F77=ifort F77_LD=ifort\
+ CTOFLIBS="-lifcore -lifport" FCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" \
  COPT= FOPT=
 
 
@@ -185,9 +205,8 @@ make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing" F77=gfortran F7
 rm -rf $RPM_BUILD_ROOT
 export NCARG=`pwd`
 make install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
-install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 # database, fontcaps, and graphcaps are arch dependent
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/ncarg
 mv $RPM_BUILD_ROOT%{_datadir}/ncarg/{database,{font,graph}caps} \
    $RPM_BUILD_ROOT%{_libdir}/ncarg/
 # Compat links for what is left
@@ -205,6 +224,13 @@ do
    manname=`basename $manpage`
    mv $manpage $RPM_BUILD_ROOT%{_mandir}/man3/%{name}_$manname
 done
+find $RPM_BUILD_ROOT%{_mandir} -type f | xargs gzip
+
+# AltCCRPMS
+# Make the environment-modules file
+mkdir -p %{buildroot}/etc/modulefiles/%{shortname}%{?_cc_name_suffix}
+# Since we're doing our own substitution here, use our own definitions.
+sed -e 's#@PREFIX@#'%{_prefix}'#' -e 's#@LIB@#%{_lib}#' < %SOURCE2 > %{buildroot}/etc/modulefiles/%{shortname}%{?_cc_name_suffix}/%{version}-%{_arch}
 
 
 %clean
@@ -214,7 +240,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING Copyright README
-%config(noreplace) %{_sysconfdir}/profile.d/ncarg.*sh
+/etc/modulefiles/%{shortname}%{?_cc_name_suffix}/%{version}-%{_arch}
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile

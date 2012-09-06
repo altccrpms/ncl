@@ -1,0 +1,15 @@
+#%Module 1.0
+#
+#  ncl module for use with 'environment-modules' package:
+#
+conflict	ncl
+prepend-path 	PATH 		@PREFIX@/bin
+prepend-path	MANPATH		@PREFIX@/share/man
+prepend-path 	LD_LIBRARY_PATH @PREFIX@/@LIB@
+setenv		NCL_HOME	@PREFIX@
+setenv		NCARG_ROOT	@PREFIX@
+setenv		NCARG_FONTCAPS	@PREFIX@/@LIB@/ncarg/fontcaps
+setenv		NCARG_GRAPHCAPS	@PREFIX@/@LIB@/ncarg/graphcaps
+setenv		NCARG_DATABASE	@PREFIX@/@LIB@/ncarg/database
+setenv		NCARG_LIB	@PREFIX@/@LIB@/ncarg
+setenv		NCARG_NCARG	@PREFIX@/share/ncarg

@@ -5,7 +5,7 @@
 
 #define BuildWithF90 TRUE
 #define IncSearch -I/usr/include/netcdf -I/usr/include/udunits2 -I/usr/include/freetype2 -I/usr/include/gdal
-#define LibSearch -L@libdir@/hdf
+#define LibSearch -L/usr/@lib@/hdf
 
 #define BuildNetCDF4 1
 #define NetCDF4lib -lnetcdf
