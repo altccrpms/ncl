@@ -124,6 +124,7 @@ Summary:        Development files for NCL and NCAR Graphics
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       libXext-devel
+Provides:       %{shortname}%{?_cc_name_suffix}-devel%{?_isa} = %{version}-%{release}
 Provides:       %{shortname}%{?_cc_name_suffix}-static%{?_isa} = %{version}-%{release}
 Provides:       ncarg%{?_cc_name_suffix}-devel%{?_isa} = %{version}-%{release}
 Obsoletes:      ncarg%{?_cc_name_suffix}-devel%{?_isa} < %{version}-%{release}
