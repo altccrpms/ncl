@@ -84,9 +84,9 @@ Requires:       udunits2
 # AltCCRPMS
 Requires:      environment-modules
 
-Provides:       ncarg%{?_cc_name_suffix} = %{version}-%{release}
-Obsoletes:      ncarg%{?_cc_name_suffix} < %{version}-%{release}
-Provides:       %{shortname}%{?_cc_name_suffix} = %{version}-%{release}
+Provides:       ncarg%{?_cc_name_suffix}%{?_isa} = %{version}-%{release}
+Obsoletes:      ncarg%{?_cc_name_suffix}%{?_isa} < %{version}-%{release}
+Provides:       %{shortname}%{?_cc_name_suffix}%{?_isa} = %{version}-%{release}
 
 
 %description
@@ -124,9 +124,9 @@ Summary:        Development files for NCL and NCAR Graphics
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       libXext-devel
-Provides:       ncl-static = %{version}-%{release}
-Provides:       ncarg-devel = %{version}-%{release}
-Obsoletes:      ncarg-devel < %{version}-%{release}
+Provides:       %{shortname}%{?_cc_name_suffix}-static%{?_isa} = %{version}-%{release}
+Provides:       ncarg%{?_cc_name_suffix}-devel%{?_isa} = %{version}-%{release}
+Obsoletes:      ncarg%{?_cc_name_suffix}-devel%{?_isa} < %{version}-%{release}
 
 %description devel
 %{summary}.
