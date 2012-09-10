@@ -5,7 +5,7 @@
 %global _infodir %{_prefix}/share/info
 %global _mandir %{_prefix}/share/man
 
-%global _cc_name intel
+%global _cc_name pgf
 %global _cc_name_suffix -%{_cc_name}
 
 #We don't want to be beholden to the proprietary libraries
@@ -198,8 +198,8 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 # ./config/ymake -config ./config -Curdir . -Topdir .
 
 module load hdf5/%{_cc_name}
-make Build CCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" CC=icc CC_LD=icc F77=ifort F77_LD=ifort\
- CTOFLIBS="-lifcore -lifport" FCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" \
+make Build CCOPTIONS="-fPIC $RPM_OPT_FLAGS" CC=gcc CC_LD=gcc F77=pgf90 F77_LD=pgf90\
+ CTOFLIBS="-L/nfs/local/pgi/linux86-64/2012/lib -lpgf90 -lpgf90_rpm1 -lpgf902 -lpgftnrtl -lpgf90rtl -lpgc -lrt" FCOPTIONS="-fPIC -fastsse" \
  COPT= FOPT=
 
 
