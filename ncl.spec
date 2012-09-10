@@ -196,7 +196,7 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 # (cd ./config; make -f Makefile.ini clean all)
 # ./config/ymake -config ./config -Curdir . -Topdir .
 
-module load hdf5%{?_cc_name_suffix}
+module load hdf5/%{_cc_name}
 make Build CCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" CC=icc CC_LD=icc F77=ifort F77_LD=ifort\
  CTOFLIBS="-lifcore -lifport" FCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" \
  COPT= FOPT=
@@ -229,9 +229,9 @@ find $RPM_BUILD_ROOT%{_mandir} -type f | xargs gzip
 
 # AltCCRPMS
 # Make the environment-modules file
-mkdir -p %{buildroot}/etc/modulefiles/%{shortname}%{?_cc_name_suffix}
+mkdir -p %{buildroot}/etc/modulefiles/%{shortname}/%{_cc_name}
 # Since we're doing our own substitution here, use our own definitions.
-sed -e 's#@PREFIX@#'%{_prefix}'#' -e 's#@LIB@#%{_lib}#' < %SOURCE2 > %{buildroot}/etc/modulefiles/%{shortname}%{?_cc_name_suffix}/%{version}-%{_arch}
+sed -e 's#@PREFIX@#'%{_prefix}'#' -e 's#@LIB@#%{_lib}#' < %SOURCE2 > %{buildroot}/etc/modulefiles/%{shortname}/%{_cc_name}/%{version}-%{_arch}
 
 
 %clean
@@ -241,7 +241,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING Copyright README
-/etc/modulefiles/%{shortname}%{?_cc_name_suffix}/%{version}-%{_arch}
+/etc/modulefiles/%{shortname}/%{_cc_name}/%{version}-%{_arch}
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile
