@@ -36,3 +36,14 @@
  }NclScalar;
  
  typedef struct _NclRefList{
+--- ncl_ncarg-6.0.0/ni/src/ncl/DataSupport.c.compound	2012-09-10 14:20:59.331255585 -0600
++++ ncl_ncarg-6.0.0/ni/src/ncl/DataSupport.c	2012-09-10 14:48:08.456212413 -0600
+@@ -820,7 +820,7 @@
+ 		case NCL_group:
+ 			return(sizeof(group));	
+ 		case NCL_compound:
+-			return(sizeof(compound));
++			return(sizeof(nclcompound));
+ 		case NCL_logical:
+ 			return(sizeof(int));	
+ 		case NCL_list:
