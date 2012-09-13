@@ -82,10 +82,12 @@ BuildRequires:  udunits2-devel
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       udunits2
 # AltCCRPMS
-Requires:      environment-modules
+Requires:       environment-modules
+Requires:       netcdf%{?_cc_name_suffix}%{?_isa}
 
 Provides:       ncarg%{?_cc_name_suffix}%{?_isa} = %{version}-%{release}
 Obsoletes:      ncarg%{?_cc_name_suffix}%{?_isa} < %{version}-%{release}
+Provides:       %{shortname}%{?_cc_name_suffix} = %{version}-%{release}
 Provides:       %{shortname}%{?_cc_name_suffix}%{?_isa} = %{version}-%{release}
 
 
@@ -124,7 +126,10 @@ Summary:        Development files for NCL and NCAR Graphics
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       libXext-devel
+Requires:       netcdf%{?_cc_name_suffix}-devel%{?_isa}
+Provides:       %{shortname}%{?_cc_name_suffix}-devel = %{version}-%{release}
 Provides:       %{shortname}%{?_cc_name_suffix}-devel%{?_isa} = %{version}-%{release}
+Provides:       %{shortname}%{?_cc_name_suffix}-static = %{version}-%{release}
 Provides:       %{shortname}%{?_cc_name_suffix}-static%{?_isa} = %{version}-%{release}
 Provides:       ncarg%{?_cc_name_suffix}-devel%{?_isa} = %{version}-%{release}
 Obsoletes:      ncarg%{?_cc_name_suffix}-devel%{?_isa} < %{version}-%{release}
@@ -198,8 +203,8 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 # ./config/ymake -config ./config -Curdir . -Topdir .
 
 module load hdf5/%{_cc_name}
-make Build CCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" CC=icc CC_LD=icc F77=ifort F77_LD=ifort\
- CTOFLIBS="-lifcore -lifport" FCOPTIONS="-fPIC -O3 -axSSE2,SSE4.1,SSE4.2" \
+make Build CCOPTIONS="-fPIC -g -O3 -axSSE2,SSE4.1,SSE4.2" CC=icc CC_LD=icc F77=ifort F77_LD=ifort\
+ CTOFLIBS="-lifcore -lifport" FCOPTIONS="-fPIC -g -O3 -axSSE2,SSE4.1,SSE4.2" \
  COPT= FOPT=
 
 
@@ -230,9 +235,9 @@ find $RPM_BUILD_ROOT%{_mandir} -type f | xargs gzip
 
 # AltCCRPMS
 # Make the environment-modules file
-mkdir -p %{buildroot}/etc/modulefiles/%{shortname}/%{_cc_name}
+mkdir -p %{buildroot}/etc/modulefiles/%{shortname}/%{_cc_name}/%{version}
 # Since we're doing our own substitution here, use our own definitions.
-sed -e 's#@PREFIX@#'%{_prefix}'#' -e 's#@LIB@#%{_lib}#' < %SOURCE2 > %{buildroot}/etc/modulefiles/%{shortname}/%{_cc_name}/%{version}-%{_arch}
+sed -e 's#@PREFIX@#'%{_prefix}'#' -e 's#@LIB@#%{_lib}#' < %SOURCE2 > %{buildroot}/etc/modulefiles/%{shortname}/%{_cc_name}/%{version}/%{_arch}
 
 
 %clean
@@ -242,7 +247,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING Copyright README
-/etc/modulefiles/%{shortname}/%{_cc_name}/%{version}-%{_arch}
+/etc/modulefiles/%{shortname}/%{_cc_name}/
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile
