@@ -309,11 +309,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ncarg/libcgm.a
 %{_libdir}/ncarg/libfftpack5_dp.a
 %{_libdir}/ncarg/libhlu.a
-%{_libdir}/ncarg/libhlu_cairo.a
 %{_libdir}/ncarg/libncarg.a
 %{_libdir}/ncarg/libncarg_c.a
 %{_libdir}/ncarg/libncarg_gks.a
-%{_libdir}/ncarg/libncarg_gks_cairo.a
 %{_libdir}/ncarg/libncarg_ras.a
 %{_libdir}/ncarg/libncl.a
 %{_libdir}/ncarg/libnclapi.a
