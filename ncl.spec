@@ -44,7 +44,12 @@ Patch13:        ncl-5.1.0-includes.patch
 Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  /bin/csh, gcc-gfortran, netcdf-devel
+BuildRequires:  /bin/csh, gcc-gfortran
+%if 0%{?fedora} >= 17
+BuildRequires:  netcdf-fortran-devel
+%else
+BuildRequires:  netcdf-devel
+%endif
 BuildRequires:  cairo-devel
 BuildRequires:  gdal-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
