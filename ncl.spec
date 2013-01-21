@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -342,6 +342,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 21 2013 Adam Tkac <atkac redhat com> - 6.1.0-2
+- rebuild due to "jpeg8-ABI" feature drop
+
 * Wed Oct 31 2012 Orion Poplawski <orion@cora.nwra.com> - 6.1.0-1
 - Update to 6.1.0
 - Drop xwd patch applied upstream
