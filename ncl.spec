@@ -214,7 +214,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files
-%defattr(-,root,root,-)
 %doc COPYING Copyright README
 %config(noreplace) %{_sysconfdir}/profile.d/ncarg.*sh
 %{_bindir}/ConvertMapData
@@ -268,7 +267,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ncarg/graphcaps/
 
 %files common
-%defattr(-,root,root,-)
 %dir %{_datadir}/ncarg
 %{_datadir}/ncarg/colormaps/
 %{_datadir}/ncarg/data/
@@ -294,7 +292,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/scrip_check_input
 
 %files devel
-%defattr(-,root,root,-)
 %{_bindir}/MakeNcl
 %{_bindir}/WRAPIT
 %{_bindir}/ncargcc
@@ -324,7 +321,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*.gz
 
 %files examples
-%defattr(-,root,root,-)
 %{_bindir}/ncargex
 %{_bindir}/ng4ex
 %{_datadir}/ncarg/examples/
