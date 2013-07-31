@@ -274,7 +274,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/ncarg/grib2_codetables.previous/
 %{_datadir}/ncarg/nclscripts/
 %{_datadir}/ncarg/ngwww/
-%{_datadir}/ncarg/sysresfile/
+%{_datadir}/ncarg/sysresfile
 %{_datadir}/ncarg/udunits
 %{_datadir}/ncarg/xapp/
 %dir %{_prefix}/lib/ncarg
