@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.1.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -338,6 +338,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 27 2013 Orion Poplawski - 6.1.2-4
+- Rebuild for gdal 1.10.0
+
 * Wed Jul 31 2013 Orion Poplawski <orion@cora.nwra.com> - 6.1.2-3
 - Build for arm
 
