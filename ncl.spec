@@ -360,7 +360,7 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Jul 20 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.0.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
-* Mon Jul 17 2012 Orion Poplawski <orion@cora.nwra.com> - 6.0.0-6
+* Mon Jul 16 2012 Orion Poplawski <orion@cora.nwra.com> - 6.0.0-6
 - Don't link against librx, was causing memory corruption
 - Compile with -fno-strict-aliasing for now
 
