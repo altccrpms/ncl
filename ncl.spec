@@ -31,7 +31,6 @@ Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 # Add needed -lm to ictrans build, remove unneeded -lrx -lidn -ldl from ncl
 Patch3:         ncl-libs.patch
-Patch7:         ncl-5.0.0-atlas.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -129,12 +128,22 @@ Example programs and data using NCL.
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
-%patch7 -p1 -b .atlas
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch16 -p1 -b .secondary
+# Build against atlas
+%if 0%{?fedora} >= 21
+%global atlasblaslib -ltatlas
+%global atlaslapacklib -ltatlas
+%else
+%global atlasblaslib -lcblas -lf77blas -lptf77blas
+%global atlaslapacklib -llapack -latlas
+%endif
+sed -ri -e 's,-lblas_ncl,%{atlasblaslib},' \
+        -e 's,-llapack_ncl,%{atlaslapacklib},' \
+        -e 's,-L\$\((BLAS|LAPACK)SRC\),-L%{_libdir}/atlas,' config/Project
 #Spurrious exec permissions
 find -name '*.[fh]' -exec chmod -x {} +
 
@@ -145,9 +154,6 @@ cp config/LINUX.ppc32.GNU config/LINUX
 
 #Fixup LINUX config (to expose vsnprintf prototype)
 sed -i -e '/StdDefines/s/-DSYSV/-D_ISOC99_SOURCE/' config/LINUX
-
-#Fixup libdir for atlas lib locations
-sed -i -e s,%LIBDIR%,%{_libdir}, config/Project
 
 rm -rf external/blas external/lapack
 
