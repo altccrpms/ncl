@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.1.2
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -31,6 +31,9 @@ Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 # Add needed -lm to ictrans build, remove unneeded -lrx -lidn -ldl from ncl
 Patch3:         ncl-libs.patch
+# Fix build with -Werror=format-security
+# https://bugzilla.redhat.com/show_bug.cgi?id=1037211
+Patch4:         ncl-format.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -128,6 +131,7 @@ Example programs and data using NCL.
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
+%patch4 -p1 -b .format
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
@@ -344,6 +348,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 31 2014 Orion Poplawski - 6.1.2-6
+- Fix build with -Werror=format-security (bug #1037211)
+
 * Sun Sep 22 2013 Orion Poplawski - 6.1.2-5
 - Rebuild for atlas 3.10
 

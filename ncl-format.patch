@@ -1,0 +1,28 @@
+diff -up ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c.format ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c
+--- ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c.format	2013-02-06 20:27:05.000000000 -0700
++++ ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c	2014-01-31 22:12:22.919599594 -0700
+@@ -310,9 +310,9 @@ void InsertLogo(float angle, float size,
+   sprintf(rotate,"%10.2f ", angle);
+   sprintf(rotate+11,"rotate\n");
+ 
+-  (void) fprintf(fp, translate);
+-  (void) fprintf(fp, scale);
+-  (void) fprintf(fp, rotate);
++  (void) fprintf(fp, "%s", translate);
++  (void) fprintf(fp, "%s", scale);
++  (void) fprintf(fp, "%s", rotate);
+   free(translate);
+   free(scale);
+   free(rotate);
+diff -up ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c.format ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c
+--- ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c.format	2013-02-06 20:28:47.000000000 -0700
++++ ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c	2014-01-31 22:13:44.255130250 -0700
+@@ -2282,7 +2282,7 @@ GribFileRecord *therec;
+ 		if (cp && ! strcmp(cp,"_hours")) {
+ 			if ((NrmQuark)therec->options[GRIB_INITIAL_TIME_COORDINATE_TYPE_OPT].values == NrmStringToQuark("numeric"))
+ 				continue;
+-			sprintf(buffer,NrmQuarkToString(dimq));
++			sprintf(buffer,"%s",NrmQuarkToString(dimq));
+ 			cp = strrchr(buffer,'_');
+ 			*cp = '\0';
+ 			newdimq = NrmStringToQuark(buffer);
