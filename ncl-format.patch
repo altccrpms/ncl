@@ -1,6 +1,18 @@
+diff -up ncl_ncarg-6.1.2/common/src/libncarg_c/options.c.format ncl_ncarg-6.1.2/common/src/libncarg_c/options.c
+--- ncl_ncarg-6.1.2/common/src/libncarg_c/options.c.format	2013-02-06 20:27:58.000000000 -0700
++++ ncl_ncarg-6.1.2/common/src/libncarg_c/options.c	2014-01-31 22:43:55.271324335 -0700
+@@ -869,7 +869,7 @@ void	PrintOptionHelp(od, fp)
+ 			sprintf(sbf," arg0 .. arg%d",odr[i].arg_count-1);
+ 			(void) strcat(buf, sbf);
+ 		}
+-		(void) fprintf(fp, buf);
++		(void) fprintf(fp, "%s", buf);
+ 		for(j=strlen(buf); j<sizeof(buf); j++) {
+ 			putc(' ', fp);
+ 		}
 diff -up ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c.format ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c
 --- ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c.format	2013-02-06 20:27:05.000000000 -0700
-+++ ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c	2014-01-31 22:12:22.919599594 -0700
++++ ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c	2014-01-31 22:16:00.868421438 -0700
 @@ -310,9 +310,9 @@ void InsertLogo(float angle, float size,
    sprintf(rotate,"%10.2f ", angle);
    sprintf(rotate+11,"rotate\n");
@@ -14,9 +26,53 @@ diff -up ncl_ncarg-6.1.2/ncarg2d/src/bin/logos/ncarlogo2ps.c.format ncl_ncarg-6.
    free(translate);
    free(scale);
    free(rotate);
+diff -up ncl_ncarg-6.1.2/ncarg2d/src/libncarg_gks/cdrivers/ps.c.format ncl_ncarg-6.1.2/ncarg2d/src/libncarg_gks/cdrivers/ps.c
+--- ncl_ncarg-6.1.2/ncarg2d/src/libncarg_gks/cdrivers/ps.c.format	2013-02-06 20:27:01.000000000 -0700
++++ ncl_ncarg-6.1.2/ncarg2d/src/libncarg_gks/cdrivers/ps.c	2014-01-31 22:45:29.039294483 -0700
+@@ -3418,8 +3418,8 @@ void ps_NcarLogo(GKSC *gksc,float x,floa
+                    scaling*(psa->dspace.urx), scaling*(psa->dspace.ury));
+   }
+ 
+-  (void) fprintf(fp, translate);
+-  (void) fprintf(fp, scale);
++  (void) fprintf(fp, "%s", translate);
++  (void) fprintf(fp, "%s", scale);
+   (void) fprintf(fp, "-40 33 translate\n");
+   (void) fprintf(fp, "1 -1 scale\n");
+   free(scale);
+diff -up ncl_ncarg-6.1.2/ni/src/mkwrap/wrapit_main.c.format ncl_ncarg-6.1.2/ni/src/mkwrap/wrapit_main.c
+--- ncl_ncarg-6.1.2/ni/src/mkwrap/wrapit_main.c.format	2013-02-06 20:28:03.000000000 -0700
++++ ncl_ncarg-6.1.2/ni/src/mkwrap/wrapit_main.c	2014-01-31 22:46:38.570497183 -0700
+@@ -267,7 +267,7 @@ main(int argc,char* argv[])
+ 	char *type = "NclANY";
+ 	
+ 
+-	fprintf(stdout,initial_fmt);
++	fprintf(stdout,"%s",initial_fmt);
+ 	if(!yyparse()) {
+ /*
+ 		tmp = wrap_list;
+@@ -277,7 +277,7 @@ main(int argc,char* argv[])
+ 			
+ 		}
+ */
+-		fprintf(stdout,init_fmt);
++		fprintf(stdout,"%s",init_fmt);
+ 		tmp = wrap_list;
+ 		while(tmp!= NULL) {
+ 			fprintf(stdout,"\tnargs = 0;\n");
+@@ -357,7 +357,7 @@ main(int argc,char* argv[])
+ 			}
+ 			tmp = tmp->next;
+ 		}
+-		fprintf(stdout,endf_fmt);
++		fprintf(stdout,"%s",endf_fmt);
+ 		exit(0);
+ 	} else {
+ 		fprintf(stdout,"Everything is NOT ok!\n");
 diff -up ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c.format ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c
 --- ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c.format	2013-02-06 20:28:47.000000000 -0700
-+++ ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c	2014-01-31 22:13:44.255130250 -0700
++++ ncl_ncarg-6.1.2/ni/src/ncl/NclGRIB.c	2014-01-31 22:16:00.870421500 -0700
 @@ -2282,7 +2282,7 @@ GribFileRecord *therec;
  		if (cp && ! strcmp(cp,"_hours")) {
  			if ((NrmQuark)therec->options[GRIB_INITIAL_TIME_COORDINATE_TYPE_OPT].values == NrmStringToQuark("numeric"))
