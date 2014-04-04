@@ -1,6 +1,6 @@
 Name:           ncl
-Version:        6.1.2
-Release:        6%{?dist}
+Version:        6.2.0
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -34,6 +34,8 @@ Patch3:         ncl-libs.patch
 # Fix build with -Werror=format-security
 # https://bugzilla.redhat.com/show_bug.cgi?id=1037211
 Patch4:         ncl-format.patch
+# Fix 6.2.0 compilation without EOS support
+Patch5:         ncl-hdf5.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -52,10 +54,13 @@ BuildRequires:  netcdf-fortran-devel
 %else
 BuildRequires:  netcdf-devel
 %endif
+BuildRequires:  atlas-devel
 BuildRequires:  cairo-devel
+BuildRequires:  hdf-static, hdf-devel >= 4.2r2
+BuildRequires:  g2clib-static
 BuildRequires:  gdal-devel
-BuildRequires:  hdf-static, hdf-devel >= 4.2r2, libjpeg-devel
-BuildRequires:  g2clib-static, atlas-devel
+BuildRequires:  libjpeg-devel
+BuildRequires:  proj-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
@@ -71,21 +76,12 @@ Obsoletes:      ncarg < %{version}-%{release}
 
 
 %description
-The NCAR Command Language (NCL) is a free interpreted language designed
-specifically for scientific data processing and visualization. NCL has robust
-file input and output. It can read and write netCDF-3, netCDF-4 classic (as
-of version 4.3.1), HDF4, binary, and ASCII data, and read HDF-EOS2, GRIB1 and
-GRIB2 (as of version 4.3.0). The graphics are world class and highly
-customizable.
-
-As of version 5.0.0, NCL and NCAR Graphics are released as one package.
-
-The software comes with a couple of useful command line tools:
-
-  * ncl_filedump - prints the contents of supported files (netCDF, HDF,
-    GRIB1, GRIB2, HDF-EOS2, and CCM History Tape)
-  * ncl_convert2nc - converts one or more GRIB1, GRIB2, HDF and/or HDF-EOS
-    files to netCDF formatted files. 
+NCAR Command Language (NCL) is an interpreted language designed specifically
+for scientific data processing and visualization.  Portable, robust, and free,
+NCL supports netCDF3/4, GRIB1/2, HDF-SDS, HDF4-EOS, binary, shapefiles, and
+ASCII files.  Numerous analysis functions are built-in.  High quality graphics
+are easily created and customized with hundreds of graphic resources.  Many
+example scripts and their corresponding graphics are available.
 
 
 %package common
@@ -132,6 +128,7 @@ Example programs and data using NCL.
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
 %patch4 -p1 -b .format
+%patch5 -p1 -b .hdf5
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
@@ -188,8 +185,8 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 
 #make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -Werror-implicit-function-declaration" F77=gfortran F77_LD=gfortran\
 
-make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing" F77=gfortran F77_LD=gfortran\
- CTOFLIBS="-lgfortran" FCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-second-underscore -fno-range-check" \
+make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing -fopenmp" F77=gfortran F77_LD=gfortran\
+ CTOFLIBS="-lgfortran" FCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-second-underscore -fno-range-check -fopenmp" \
  COPT= FOPT=
 
 
@@ -348,6 +345,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr 4 2014 Orion Poplawski - 6.2.0-1
+- Update to 6.2.0
+- Compile with -fopenmp
+
 * Fri Jan 31 2014 Orion Poplawski - 6.1.2-6
 - Fix build with -Werror=format-security (bug #1037211)
 

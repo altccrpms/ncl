@@ -1,0 +1,12 @@
+diff -up ncl_ncarg-6.2.0/ni/src/ncl/NclNewHDF5.c.hdf5 ncl_ncarg-6.2.0/ni/src/ncl/NclNewHDF5.c
+--- ncl_ncarg-6.2.0/ni/src/ncl/NclNewHDF5.c.hdf5	2014-03-31 20:23:16.000000000 -0600
++++ ncl_ncarg-6.2.0/ni/src/ncl/NclNewHDF5.c	2014-04-04 14:06:02.352612375 -0600
+@@ -2549,7 +2549,7 @@ NrmQuark* _get_refquarks(hid_t dset, hid
+ 
+     f_space = H5Dget_space(dset);
+ 
+-    if (f_space == FAIL)
++    if (0 > f_space)
+     {
+         fprintf(stderr, "\nfile: %s, line: %d\n", __FILE__, __LINE__);
+         fprintf(stderr, "\tH5Dget_space failed.\n");

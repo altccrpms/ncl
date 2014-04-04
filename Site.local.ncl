@@ -4,7 +4,7 @@
 #define SharePath $(DESTDIR)@datadir@
 
 #define BuildWithF90 TRUE
-#define IncSearch -I/usr/include/netcdf -I/usr/include/udunits2 -I/usr/include/freetype2 -I/usr/include/gdal
+#define IncSearch -I/usr/include/hdf -I/usr/include/netcdf -I/usr/include/udunits2 -I/usr/include/freetype2 -I/usr/include/gdal
 #define LibSearch -L@libdir@/hdf
 
 #define BuildNetCDF4 1
@@ -12,7 +12,7 @@
 #define BuildCAIRO 1
 #define CAIROlib -lcairo -lfreetype
 #define BuildGDAL 1
-#define GDALlib -lgdal
+#define GDALlib -lgdal -lproj
 #define BuildHDFEOS 0
 #define BuildHDFEOS5 0
 #define BuildTRIANGLE 0
