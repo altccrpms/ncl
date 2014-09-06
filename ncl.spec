@@ -1,6 +1,6 @@
 Name:           ncl
-Version:        6.2.0
-Release:        3%{?dist}
+Version:        6.2.1
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -31,11 +31,6 @@ Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 # Add needed -lm to ictrans build, remove unneeded -lrx -lidn -ldl from ncl
 Patch3:         ncl-libs.patch
-# Fix build with -Werror=format-security
-# https://bugzilla.redhat.com/show_bug.cgi?id=1037211
-Patch4:         ncl-format.patch
-# Fix 6.2.0 compilation without EOS support
-Patch5:         ncl-hdf5.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -127,8 +122,6 @@ Example programs and data using NCL.
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
-%patch4 -p1 -b .format
-%patch5 -p1 -b .hdf5
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
@@ -345,6 +338,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep 5 2014 Orion Poplawski - 6.2.1-1
+- Update to 6.2.1
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.2.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
