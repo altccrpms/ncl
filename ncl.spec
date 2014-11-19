@@ -44,7 +44,7 @@ Patch16:        ncl-5.2.1-secondary.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran
-%if 0%{?fedora} >= 17
+%if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires:  netcdf-fortran-devel
 %else
 BuildRequires:  netcdf-devel
@@ -59,7 +59,7 @@ BuildRequires:  proj-devel
 # imake needed for makedepend
 BuildRequires:  imake, libXt-devel, libXaw-devel, libXext-devel, libXpm-devel
 BuildRequires:  byacc, flex
-%if 0%{?fedora} >= 13
+%if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires:  flex-static
 %endif
 BuildRequires:  udunits2-devel
@@ -83,7 +83,7 @@ example scripts and their corresponding graphics are available.
 Summary:        Common files for NCL and NCAR Graphics
 Group:          Applications/Engineering
 Requires:       %{name} = %{version}-%{release}
-%if 0%{?fedora} > 9 || 0%{?rhel} > 5
+%if 0%{?fedora} || 0%{?rhel} > 5
 BuildArch:      noarch
 %endif
 
@@ -108,7 +108,7 @@ Obsoletes:      ncarg-devel < %{version}-%{release}
 Summary:        Example programs and data using NCL
 Group:          Development/Libraries
 Requires:       %{name}-devel = %{version}-%{release}
-%if 0%{?fedora} > 9 || 0%{?rhel} > 5
+%if 0%{?fedora} || 0%{?rhel} > 5
 BuildArch:      noarch
 %endif
 
@@ -128,7 +128,7 @@ Example programs and data using NCL.
 %patch13 -p1 -b .includes
 %patch16 -p1 -b .secondary
 # Build against atlas
-%if 0%{?fedora} >= 21
+%if 0%{?fedora} >= 21 || %{?rhel} >= 7
 %global atlasblaslib -ltatlas
 %global atlaslapacklib -ltatlas
 %else
