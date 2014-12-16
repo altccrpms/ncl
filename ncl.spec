@@ -128,7 +128,7 @@ Example programs and data using NCL.
 %patch13 -p1 -b .includes
 %patch16 -p1 -b .secondary
 # Build against atlas
-%if 0%{?fedora} >= 21 || %{?rhel} >= 7
+%if 0%{?fedora} >= 21 || 0%{?rhel} >= 7
 %global atlasblaslib -ltatlas
 %global atlaslapacklib -ltatlas
 %else
