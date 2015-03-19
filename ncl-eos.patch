@@ -1,0 +1,21 @@
+diff -up ncl_ncarg-6.3.0/ni/src/lib/nio/yMakefile.eos ncl_ncarg-6.3.0/ni/src/lib/nio/yMakefile
+--- ncl_ncarg-6.3.0/ni/src/lib/nio/yMakefile.eos	2015-03-16 15:21:57.000000000 -0600
++++ ncl_ncarg-6.3.0/ni/src/lib/nio/yMakefile	2015-03-19 14:27:43.818011336 -0600
+@@ -188,7 +188,7 @@ STATIC_SRCS	=	AddFileFormats.c AttSuppor
+ 			NclNetCdf.c NclOneDValCoordData.c NclType.c \
+ 			NclTypelist.c NclGroup.c NclVar.c VarSupport.c \
+ 			AdvancedFileSupport.c ListSupport.c NclList.c \
+-			NclMultiDVallistData.c NclNetCDF4.c NclNewHDF5.c NclNewHDFEOS5.c \
++			NclMultiDVallistData.c NclNetCDF4.c NclNewHDF5.c \
+ 			ctoiee.c date.c cmpf.c
+ 
+ NIO_ONLY_CSRCS	=	cmpf.c nioBase.c nio.c nioCallbacks.c nioConvert.c nioError.c niohlu.c nio_io.c \
+@@ -228,7 +228,7 @@ STATIC_OBJS	=	AddFileFormats.o AttSuppor
+ 			NclNetCdf.o NclOneDValCoordData.o NclType.o \
+ 			NclTypelist.o NclGroup.o NclVar.o VarSupport.o \
+ 			AdvancedFileSupport.o ListSupport.o NclList.o \
+-			NclMultiDVallistData.o NclNetCDF4.o NclNewHDF5.o NclNewHDFEOS5.o \
++			NclMultiDVallistData.o NclNetCDF4.o NclNewHDF5.o \
+ 			ctoiee.o date.o
+ 
+ NIO_ONLY_COBJS	=	nio.o nio_io.o nioError.o nioNresDB.o nioCallbacks.o \

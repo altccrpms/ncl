@@ -1,13 +1,12 @@
 Name:           ncl
-Version:        6.2.1
-Release:        2%{?dist}
+Version:        6.3.0
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
-# You must register for a free account at http://esg.ucar.edu/ before being able to download the source.
-Source0:        ncl_ncarg-%{version}.tar.gz
+Source0:        https://www.earthsystemgrid.org/download/fileDownload.htm?logicalFileId=bec58cb3-cd9b-11e4-bb80-00c0f03d5b7c#/ncl_ncarg-%{version}.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
 Source3:        ncarg.sh
@@ -31,6 +30,8 @@ Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 # Add needed -lm to ictrans build, remove unneeded -lrx -lidn -ldl from ncl
 Patch3:         ncl-libs.patch
+# Fix build without EOS
+Patch4:         ncl-eos.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -122,6 +123,7 @@ Example programs and data using NCL.
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
+%patch4 -p1 -b .eos
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
@@ -338,6 +340,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 19 2015 Orion Poplawski - 6.3.0-1
+- Update to 6.3.0
+
 * Thu Jan 08 2015 Orion Poplawski <orion@cora.nwra.com> - 6.2.1-2
 - Rebuild for hdf5 1.8.14
 
