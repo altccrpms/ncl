@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -340,6 +340,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 6.3.0-2
+- Rebuilt for GCC 5 C++11 ABI change
+
 * Thu Mar 19 2015 Orion Poplawski - 6.3.0-1
 - Update to 6.3.0
 
