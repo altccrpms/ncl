@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.3.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -340,6 +340,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jul 27 2015 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-5
+- Rebuild for gdal 2.0.0
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 6.3.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
