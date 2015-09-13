@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.3.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -42,7 +42,6 @@ Patch12:        ncl-5.1.0-netcdff.patch
 Patch13:        ncl-5.1.0-includes.patch
 # Add Fedora secondary arches
 Patch16:        ncl-5.2.1-secondary.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  /bin/csh, gcc-gfortran
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -129,6 +128,7 @@ Example programs and data using NCL.
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch16 -p1 -b .secondary
+
 # Build against atlas
 %if 0%{?fedora} >= 21 || 0%{?rhel} >= 7
 %global atlasblaslib -ltatlas
@@ -186,7 +186,6 @@ make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing -fopenmp" F77=gf
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 export NCARG=`pwd`
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
@@ -210,9 +209,6 @@ do
    mv $manpage $RPM_BUILD_ROOT%{_mandir}/man3/%{name}_$manname
 done
 
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 
 %files
@@ -340,6 +336,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Sep 13 2015 Peter Robinson <pbrobinson@fedoraproject.org> 6.3.0-6
+- Fix FTBFS on aarch64
+
 * Mon Jul 27 2015 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-5
 - Rebuild for gdal 2.0.0
 
