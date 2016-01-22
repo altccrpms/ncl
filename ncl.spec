@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.3.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -336,6 +336,9 @@ done
 
 
 %changelog
+* Fri Jan 22 2016 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-7
+- Rebuild for netcdf 4.4.0
+
 * Sun Sep 13 2015 Peter Robinson <pbrobinson@fedoraproject.org> 6.3.0-6
 - Fix FTBFS on aarch64
 
