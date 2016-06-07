@@ -1,5 +1,9 @@
-Name:           ncl
-Version:        6.3.0
+%global shortname ncl
+%global ver 6.3.0
+%{?altcc_init:%altcc_init -n %{shortname} -v %{version}}
+
+Name:           ncl%{?altcc_pkg_suffix}
+Version:        %{ver}
 Release:        8%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
@@ -10,6 +14,7 @@ Source0:        https://www.earthsystemgrid.org/download/fileDownload.htm?logica
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
 Source3:        ncarg.sh
+Source4:        ncl.module.in
 
 # ymake uses cpp with some defines on the command line to generate a 
 # Makefile which consists in:
@@ -42,16 +47,18 @@ Patch12:        ncl-5.1.0-netcdff.patch
 Patch13:        ncl-5.1.0-includes.patch
 # Add Fedora secondary arches
 Patch16:        ncl-5.2.1-secondary.patch
+# Compile with ifort
+Patch20:        ncl-intel.patch
 
-BuildRequires:  /bin/csh, gcc-gfortran
+BuildRequires:  /bin/csh
 %if 0%{?fedora} || 0%{?rhel} >= 7
-BuildRequires:  netcdf-fortran-devel
+BuildRequires:  netcdf-fortran%{?altcc_dep_suffix}-devel
 %else
-BuildRequires:  netcdf-devel
+BuildRequires:  netcdf%{?altcc_dep_suffix}-devel
 %endif
 BuildRequires:  atlas-devel
 BuildRequires:  cairo-devel
-BuildRequires:  hdf-static, hdf-devel >= 4.2r2
+BuildRequires:  hdf%{?altcc_dep_suffix}-static, hdf%{?altcc_dep_suffix}-devel >= 4.2r2
 BuildRequires:  g2clib-static
 BuildRequires:  gdal-devel
 BuildRequires:  libjpeg-devel
@@ -66,8 +73,8 @@ BuildRequires:  udunits2-devel
 Requires:       %{name}-common = %{version}-%{release}
 Requires:       udunits2
 
-Provides:       ncarg = %{version}-%{release}
-Obsoletes:      ncarg < %{version}-%{release}
+%?altcc_reqmodules
+%?altcc_provide
 
 
 %description
@@ -96,9 +103,7 @@ Summary:        Development files for NCL and NCAR Graphics
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       libXext-devel
-Provides:       ncl-static = %{version}-%{release}
-Provides:       ncarg-devel = %{version}-%{release}
-Obsoletes:      ncarg-devel < %{version}-%{release}
+%{?altcc:%altcc_provide devel}
 
 %description devel
 %{summary}.
@@ -111,6 +116,7 @@ Requires:       %{name}-devel = %{version}-%{release}
 %if 0%{?fedora} || 0%{?rhel} > 5
 BuildArch:      noarch
 %endif
+%{?altcc:%altcc_provide examples}
 
 %description examples
 Example programs and data using NCL.
@@ -128,9 +134,11 @@ Example programs and data using NCL.
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch16 -p1 -b .secondary
+%patch20 -p1 -b .intel
 
+%if "%{?altcc_cc_name}" == ""
 # Build against atlas
-%if 0%{?fedora} >= 21 || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %global atlasblaslib -ltatlas
 %global atlaslapacklib -ltatlas
 %else
@@ -140,6 +148,11 @@ Example programs and data using NCL.
 sed -ri -e 's,-lblas_ncl,%{atlasblaslib},' \
         -e 's,-llapack_ncl,%{atlaslapacklib},' \
         -e 's,-L\$\((BLAS|LAPACK)SRC\),-L%{_libdir}/atlas,' config/Project
+%else
+sed -ri -e 's,-lblas_ncl,,' \
+        -e 's,-llapack_ncl,,' \
+        -e 's,-L\$\((BLAS|LAPACK)SRC\),-mkl,' config/Project
+%endif
 #Spurrious exec permissions
 find -name '*.[fh]' -exec chmod -x {} +
 
@@ -153,12 +166,40 @@ sed -i -e '/StdDefines/s/-DSYSV/-D_ISOC99_SOURCE/' config/LINUX
 
 rm -rf external/blas external/lapack
 
+%{?altcc:module load hdf hdf5 netcdf}
+[ -z "$HDF_INCLUDE" ] && export HDF_INCLUDE=%{_includedir}/hdf
+[ -z "$HDF_LIB" ] && export HDF_LIB=%{_libdir}/hdf
+[ -z "$HDF5_LIB" ] && export HDF5_LIB=%{_libdir}
+[ -z "$NETCDF_INCLUDE" ] && export NETCDF_INCLUDE=%{_includedir}/netcdf
+[ -z "$NETCDF_LIB" ] && export NETCDF_LIB=%{_libdir}
+[ -z "$CC" ] && export CC=gcc
+[ -z "$CC_LD" ] && export CC_LD=gcc
+[ -z "$CXX" ] && export CXX=g++
+[ -z "$FC" ] && export FC=gfortran
+
+%if "%{?altcc_cc_name}" == "intel"
+export CC_LD="ifort -nofor-main"
+%endif
+
 # fix the install directories
 sed -e 's;@prefix@;%{_prefix};' \
  -e 's;@mandir@;%{_mandir};' \
  -e 's;@datadir@;%{_datadir};' \
  -e 's;@libdir@;%{_libdir};' \
+ -e "s;@CC@;$CC;" \
+ -e "s;@CC_LD@;$CC_LD;" \
+ -e "s;@CXX@;$CXX;" \
+ -e "s;@FC@;$FC;" \
+ -e "s;@HDF_INCLUDE@;$HDF_INCLUDE;" \
+ -e "s;@HDF_LIB@;$HDF_LIB;" \
+ -e "s;@HDF5_LIB@;$HDF5_LIB;" \
+ -e "s;@NETCDF_INCLUDE@;$NETCDF_INCLUDE;" \
+ -e "s;@NETCDF_LIB@;$NETCDF_LIB;" \
  %{SOURCE1} > config/Site.local
+# No GDAL with altcc (C++ issues)
+%{?altcc:sed -i -e /GDAL/d config/Site.local}
+# Remove warning about redifining Compiler defines in Site.local
+sed -i -e /Compiler/d config/LINUX
 
 #Setup the profile scripts
 cp %{SOURCE2} %{SOURCE3} .
@@ -171,25 +212,30 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 
 
 %build
+%{?altcc:module load hdf hdf5 netcdf}
 # short-cicuit:
 ./config/ymkmf
 
 # ./config/ymkmf could be also short circuited, since it does:
 # (cd ./config; make -f Makefile.ini clean all)
 # ./config/ymake -config ./config -Curdir . -Topdir .
-
-#make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -Werror-implicit-function-declaration" F77=gfortran F77_LD=gfortran\
-
-make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing -fopenmp" F77=gfortran F77_LD=gfortran\
- CTOFLIBS="-lgfortran" FCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-second-underscore -fno-range-check -fopenmp" \
+[ -z "$FC" ] && export FC=gfortran
+[ -z "$FFLAGS" ] && export FFLAGS="$RPM_OPT_FLAGS"
+%if "%{?altcc_cc_name}" == "intel"
+export FFLAGS="$FFLAGS -nogen-interfaces"
+%endif
+make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing -fopenmp" F77=$FC F77_LD=$FC \
+ FCOPTIONS="$FFLAGS -fPIC -fno-second-underscore -fno-range-check -fopenmp" \
  COPT= FOPT=
 
 
 %install
 export NCARG=`pwd`
 make install DESTDIR=$RPM_BUILD_ROOT
+%if !0%{?altcc}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 install -m 0644 ncarg.csh ncarg.sh $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+%endif
 # database, fontcaps, and graphcaps are arch dependent
 mv $RPM_BUILD_ROOT%{_datadir}/ncarg/{database,{font,graph}caps} \
    $RPM_BUILD_ROOT%{_libdir}/ncarg/
@@ -209,11 +255,16 @@ do
    mv $manpage $RPM_BUILD_ROOT%{_mandir}/man3/%{name}_$manname
 done
 
+%{?altcc:%altcc_doc}
+%{?altcc:%altcc_license}
+%{?altcc:%altcc_writemodule %SOURCE4}
 
 
 %files
-%doc COPYING Copyright README
-%config(noreplace) %{_sysconfdir}/profile.d/ncarg.*sh
+%license COPYING Copyright
+%doc README
+%{!?altcc:%config(noreplace) %{_sysconfdir}/profile.d/ncarg.*sh}
+%{?altcc:%altcc_files -dlm %{_bindir} %{_libdir}}
 %{_bindir}/ConvertMapData
 %{_bindir}/WriteLineFile
 %{_bindir}/WriteNameFile
@@ -260,11 +311,13 @@ done
 %{_bindir}/tdpackdemo
 %{_bindir}/tgks0a
 %{_bindir}/tlocal
+%dir %{_libdir}/ncarg
 %{_libdir}/ncarg/database/
 %{_libdir}/ncarg/fontcaps/
 %{_libdir}/ncarg/graphcaps/
 
 %files common
+%{?altcc:%altcc_files %{_prefix}/lib %{_mandir}/man1 %{_mandir}/man5}
 %dir %{_datadir}/ncarg
 %{_datadir}/ncarg/colormaps/
 %{_datadir}/ncarg/data/
@@ -285,11 +338,12 @@ done
 %{_prefix}/lib/ncarg/sysresfile
 %{_prefix}/lib/ncarg/udunits
 %{_prefix}/lib/ncarg/xapp
-%{_mandir}/man1/*.gz
-%{_mandir}/man5/*.gz
+%{_mandir}/man1/*.1*
+%{_mandir}/man5/*.5*
 %{_bindir}/scrip_check_input
 
 %files devel
+%{?altcc:%altcc_files %{_includedir} %{_mandir}/man3}
 %{_bindir}/MakeNcl
 %{_bindir}/WRAPIT
 %{_bindir}/ncargcc
@@ -316,9 +370,10 @@ done
 %{_libdir}/ncarg/libnio.a
 %{_libdir}/ncarg/libsphere3.1_dp.a
 %{_libdir}/ncarg/ncarg/
-%{_mandir}/man3/*.gz
+%{_mandir}/man3/*.3*
 
 %files examples
+%{?altcc:%altcc_files %{_datadir}/ncarg}
 %{_bindir}/ncargex
 %{_bindir}/ng4ex
 %{_datadir}/ncarg/examples/

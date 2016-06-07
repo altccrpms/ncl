@@ -1,0 +1,67 @@
+diff -up ncl_ncarg-6.3.0/external/sphere3.1_dp/shagc.f.intel ncl_ncarg-6.3.0/external/sphere3.1_dp/shagc.f
+--- ncl_ncarg-6.3.0/external/sphere3.1_dp/shagc.f.intel	2015-03-16 15:21:34.000000000 -0600
++++ ncl_ncarg-6.3.0/external/sphere3.1_dp/shagc.f	2016-05-26 20:50:50.416455922 -0600
+@@ -594,7 +594,7 @@ c     set indices in temp work for doubl
+       DIMENSION WTS(NLAT),P0N(NLAT,LATE),P1N(NLAT,LATE),ABEL(1),BBEL(1),
+      +          CBEL(1),WFFT(1)
+ C*PT*WARNING* Already double-precision
+-      DOUBLE PRECISION PB,DTHETA(NLAT),DWTS(NLAT),WORK(*)
++      DOUBLE PRECISION PB,DTHETA(NLAT),DWTS(NLAT),WORK(*),W
+ c     compute the nlat  gaussian points and weights, the
+ c     m=0,1 legendre polys for gaussian points and all n,
+ c     and the legendre recursion coefficients
+@@ -613,7 +613,7 @@ c     preset quantites for fourier trans
+ c     compute double precision gaussian points and weights
+ c     lw = 4*nlat*(nlat+1)+2
+       LW = NLAT* (NLAT+2)
+-      CALL DGAQD(NLAT,DTHETA,DWTS,WORK,LW,IER)
++      CALL DGAQD(NLAT,DTHETA,DWTS,W,LW,IER)
+       IF (IER.NE.0) RETURN
+ c     store gaussian weights single precision to save computation
+ c     in inner loops in analysis
+diff -up ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsq.f.intel ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsq.f
+--- ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsq.f.intel	2015-03-16 15:20:41.000000000 -0600
++++ ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsq.f	2016-05-26 20:50:50.417455918 -0600
+@@ -33,7 +33,7 @@ C
+ C Declare local variables.
+ C
+         INTEGER          I,IBEG,IDIR,IEND,IFLG,IINT,ILEV,IPGB,IPID,IPOS,
+-     +                   ISGB,ISTA,ITML,ITMP,ITYP,NCRA,NPTS
++     +                   ISGB,ISTA,ITML,ITMP,ITYP,NCRA,NPTS,ISHIFT
+ C
+         DOUBLE PRECISION DLAT,DLON,PLAT,PLON,QLAT,QLON,RLAT,RLON,XCRD,
+      +                   XLAT,XLON,YCRD
+diff -up ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsx.f.intel ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsx.f
+--- ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsx.f.intel	2015-03-16 15:20:41.000000000 -0600
++++ ncl_ncarg-6.3.0/ncarg2d/src/libncarg/ezmap/mdrgsx.f	2016-05-26 20:50:50.417455918 -0600
+@@ -44,7 +44,8 @@ C
+ C Declare local variables.
+ C
+         INTEGER          I,IAAI(1),IAGI(1),ICWP,IFLG,ILEV,IPGB,IPID,
+-     +                   IPOS,ISGB,ISTA,ITML,ITMP,ITYP,LNLG,NCRA,NPTS
++     +                   IPOS,ISGB,ISTA,ITML,ITMP,ITYP,LNLG,NCRA,NPTS,
++     +                   ISHIFT
+ C
+         REAL             XVPL,XVPR,YVPB,YVPT,XWDL,XWDR,YWDB,YWDT
+ C
+diff -up ncl_ncarg-6.3.0/ncarg2d/src/libncarg/vaspackt/CodeIftran.intel ncl_ncarg-6.3.0/ncarg2d/src/libncarg/vaspackt/CodeIftran
+--- ncl_ncarg-6.3.0/ncarg2d/src/libncarg/vaspackt/CodeIftran.intel	2015-03-16 15:20:40.000000000 -0600
++++ ncl_ncarg-6.3.0/ncarg2d/src/libncarg/vaspackt/CodeIftran	2016-05-27 07:58:59.820045761 -0600
+@@ -2282,6 +2282,8 @@ C Declare all of the VASPACKT common blo
+ C
+ .CALL VTCOMN,/$SAVE-COMMON$/1/
+ C
++      INTEGER ISHIFT      
++C
+ C RLB 3/2010: Previously the integer parameter was converted to a float
+ C   and the work was delegated off to VTSETR. This provided a sort
+ C   of "automatic type conversion", allowing the user to set a real
+@@ -2423,6 +2425,8 @@ C Declare all of the VASPACKT common blo
+ C
+ .CALL VTCOMN,/$SAVE-COMMON$/1/
+ C
++       INTEGER ISHIFT
++C
+ C Check for an uncleared prior error.
+ C
+         IF (ICFELL('VTSETR - UNCLEARED PRIOR ERROR',1).NE.0) RETURN

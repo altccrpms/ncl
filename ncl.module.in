@@ -1,0 +1,16 @@
+#%Module 1.0
+#
+#  ncl environemnt module
+#
+conflict	ncl
+prepend-path 	PATH 		@PREFIX@/bin
+prepend-path	MANPATH		@PREFIX@/share/man
+prepend-path 	LD_LIBRARY_PATH	@PREFIX@/@LIB@
+setenv		NCL_HOME	@PREFIX@
+setenv		NCL_INCLUDE	@PREFIX@/include
+setenv		NCL_LIB		@PREFIX@/@LIB@
+setenv		NCARG_ROOT	@PREFIX@
+setenv		NCARG_DATABASE	@PREFIX@/@LIB@/ncarg/database
+setenv		NCARG_FONTCAPS	@PREFIX@/@LIB@/ncarg/fontcaps
+setenv		NCARG_GRAPHCAPS	@PREFIX@/@LIB@/ncarg/graphcaps
+setenv		NCARG_NCARG	@PREFIX@/share/ncarg
