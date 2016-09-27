@@ -1,6 +1,6 @@
 %global shortname ncl
 %global ver 6.3.0
-%{?altcc_init:%altcc_init -n %{shortname} -v %{version}}
+%?altcc_init
 
 Name:           ncl%{?altcc_pkg_suffix}
 Version:        %{ver}
