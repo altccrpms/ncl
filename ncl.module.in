@@ -10,6 +10,7 @@ setenv		NCL_HOME	@PREFIX@
 setenv		NCL_INCLUDE	@PREFIX@/include
 setenv		NCL_LIB		@PREFIX@/@LIB@
 setenv		NCARG_ROOT	@PREFIX@
+setenv		NCARG_LIB	@PREFIX@/@LIB@/ncarg
 setenv		NCARG_DATABASE	@PREFIX@/@LIB@/ncarg/database
 setenv		NCARG_FONTCAPS	@PREFIX@/@LIB@/ncarg/fontcaps
 setenv		NCARG_GRAPHCAPS	@PREFIX@/@LIB@/ncarg/graphcaps
