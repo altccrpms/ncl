@@ -163,6 +163,10 @@ cp config/LINUX.ppc32.GNU config/LINUX
 
 #Fixup LINUX config (to expose vsnprintf prototype)
 sed -i -e '/StdDefines/s/-DSYSV/-D_ISOC99_SOURCE/' config/LINUX
+%if "%{?altcc_cc_name}" == "intel"
+# Do not link to gfortran
+sed -i -e '/CtoFLibraries/d' config/LINUX
+%endif
 
 rm -rf external/blas external/lapack
 
@@ -178,6 +182,7 @@ rm -rf external/blas external/lapack
 [ -z "$FC" ] && export FC=gfortran
 
 %if "%{?altcc_cc_name}" == "intel"
+# Link with Fortran compiler to get proper libraries for mixed C/Fortran code
 export CC_LD="ifort -nofor-main"
 %endif
 
@@ -192,6 +197,7 @@ sed -e 's;@prefix@;%{_prefix};' \
  -e "s;@FC@;$FC;" \
  -e "s;@HDF_INCLUDE@;$HDF_INCLUDE;" \
  -e "s;@HDF_LIB@;$HDF_LIB;" \
+ -e "s;@HDF5_INCLUDE@;$HDF5_INCLUDE;" \
  -e "s;@HDF5_LIB@;$HDF5_LIB;" \
  -e "s;@NETCDF_INCLUDE@;$NETCDF_INCLUDE;" \
  -e "s;@NETCDF_LIB@;$NETCDF_LIB;" \

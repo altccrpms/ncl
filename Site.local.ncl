@@ -4,7 +4,7 @@
 #define SharePath $(DESTDIR)@datadir@
 
 #define BuildWithF90 TRUE
-#define IncSearch -I@HDF_INCLUDE@ -I@NETCDF_INCLUDE@ -I/usr/include/udunits2 -I/usr/include/freetype2 -I/usr/include/gdal
+#define IncSearch -I@HDF_INCLUDE@ -I@HDF5_INCLUDE@ -I@NETCDF_INCLUDE@ -I/usr/include/udunits2 -I/usr/include/freetype2 -I/usr/include/gdal
 #define LibSearch -L@HDF5_LIB@ -L@HDF_LIB@ -L@NETCDF_LIB@
 
 #define CCompiler @CC@
