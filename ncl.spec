@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.3.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -95,7 +95,7 @@ BuildArch:      noarch
 Summary:        Development files for NCL and NCAR Graphics
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
-Requires:       libXext-devel
+Requires:       cairo-devel
 Provides:       ncl-static = %{version}-%{release}
 Provides:       ncarg-devel = %{version}-%{release}
 Obsoletes:      ncarg-devel < %{version}-%{release}
@@ -336,6 +336,9 @@ done
 
 
 %changelog
+* Thu Sep 29 2016 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-9
+- Make ncl-devel require cairo-devel
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 6.3.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
