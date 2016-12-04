@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.3.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -336,6 +336,9 @@ done
 
 
 %changelog
+* Sun Dec 04 2016 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-10
+- Rebuild for jasper 2.0
+
 * Thu Sep 29 2016 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-9
 - Make ncl-devel require cairo-devel
 
