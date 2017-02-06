@@ -1,6 +1,6 @@
 Name:           ncl
 Version:        6.3.0
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -336,6 +336,9 @@ done
 
 
 %changelog
+* Mon Feb 06 2017 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-11
+- Rebuild for gcc 7
+
 * Sun Dec 04 2016 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-10
 - Rebuild for jasper 2.0
 
