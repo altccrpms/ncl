@@ -45,8 +45,6 @@ Patch12:        ncl-5.1.0-netcdff.patch
 Patch13:        ncl-5.1.0-includes.patch
 # Add Fedora secondary arches
 Patch16:        ncl-5.2.1-secondary.patch
-# Compile with ifort
-Patch20:        ncl-intel.patch
 
 BuildRequires:  /bin/csh
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -132,7 +130,6 @@ Example programs and data using NCL.
 %patch12 -p1 -b .netcdff
 %patch13 -p1 -b .includes
 %patch16 -p1 -b .secondary
-%patch20 -p1 -b .intel
 
 %if "%{?altcc_cc_name}" == ""
 # Build against atlas
