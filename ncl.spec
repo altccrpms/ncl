@@ -1,12 +1,12 @@
 Name:           ncl
-Version:        6.3.0
-Release:        11%{?dist}
+Version:        6.4.0
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
-Source0:        https://www.earthsystemgrid.org/download/fileDownload.htm?logicalFileId=bec58cb3-cd9b-11e4-bb80-00c0f03d5b7c#/ncl_ncarg-%{version}.tar.gz
+Source0:        https://www.earthsystemgrid.org/download/fileDownload.html?logicalFileId=86b9bec2-fa01-11e6-a976-00c0f03d5b7c#/ncl_ncarg-%{version}.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
 Source3:        ncarg.sh
@@ -30,8 +30,6 @@ Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 # Add needed -lm to ictrans build, remove unneeded -lrx -lidn -ldl from ncl
 Patch3:         ncl-libs.patch
-# Fix build without EOS
-Patch4:         ncl-eos.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -54,6 +52,7 @@ BuildRequires:  cairo-devel
 BuildRequires:  hdf-static, hdf-devel >= 4.2r2
 BuildRequires:  g2clib-static
 BuildRequires:  gdal-devel
+BuildRequires:  gsl-devel
 BuildRequires:  libjpeg-devel
 BuildRequires:  proj-devel
 # imake needed for makedepend
@@ -122,7 +121,6 @@ Example programs and data using NCL.
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
-%patch4 -p1 -b .eos
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
@@ -180,7 +178,7 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 
 #make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -Werror-implicit-function-declaration" F77=gfortran F77_LD=gfortran\
 
-make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing -fopenmp" F77=gfortran F77_LD=gfortran\
+make Build CCOPTIONS="$RPM_OPT_FLAGS -std=c99 -fPIC -fno-strict-aliasing -fopenmp" F77=gfortran F77_LD=gfortran\
  CTOFLIBS="-lgfortran" FCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-second-underscore -fno-range-check -fopenmp" \
  COPT= FOPT=
 
@@ -336,6 +334,9 @@ done
 
 
 %changelog
+* Tue Mar 7 2017 Orion Poplawski <orion@cora.nwra.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Mon Feb 06 2017 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-11
 - Rebuild for gcc 7
 
