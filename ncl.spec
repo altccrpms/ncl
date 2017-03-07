@@ -1,16 +1,16 @@
 %global shortname ncl
-%global ver 6.3.0
+%global ver 6.4.0
 %?altcc_init
 
 Name:           ncl%{?altcc_pkg_suffix}
 Version:        %{ver}
-Release:        9%{?dist}
+Release:        1%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
 License:        BSD
 URL:            http://www.ncl.ucar.edu
-Source0:        https://www.earthsystemgrid.org/download/fileDownload.htm?logicalFileId=bec58cb3-cd9b-11e4-bb80-00c0f03d5b7c#/ncl_ncarg-%{version}.tar.gz
+Source0:        https://www.earthsystemgrid.org/download/fileDownload.html?logicalFileId=86b9bec2-fa01-11e6-a976-00c0f03d5b7c#/ncl_ncarg-%{version}.tar.gz
 Source1:        Site.local.ncl
 Source2:        ncarg.csh
 Source3:        ncarg.sh
@@ -35,8 +35,6 @@ Patch1:         ncarg-4.4.1-deps.patch
 Patch2:         ncl-5.1.0-ppc64.patch
 # Add needed -lm to ictrans build, remove unneeded -lrx -lidn -ldl from ncl
 Patch3:         ncl-libs.patch
-# Fix build without EOS
-Patch4:         ncl-eos.patch
 # don't have the installation target depends on the build target since
 # for library it implies running ranlib and modifying the library timestamp
 Patch10:        ncl-5.0.0-no_install_dep.patch
@@ -61,6 +59,7 @@ BuildRequires:  cairo-devel
 BuildRequires:  hdf%{?altcc_dep_suffix}-static, hdf%{?altcc_dep_suffix}-devel >= 4.2r2
 BuildRequires:  g2clib-static
 BuildRequires:  gdal-devel
+BuildRequires:  gsl-devel
 BuildRequires:  libjpeg-devel
 BuildRequires:  proj-devel
 # imake needed for makedepend
@@ -128,7 +127,6 @@ Example programs and data using NCL.
 %patch1 -p1 -b .deps
 %patch2 -p1 -b .ppc64
 %patch3 -p1 -b .libs
-%patch4 -p1 -b .eos
 %patch10 -p1 -b .no_install_dep
 %patch11 -p1 -b .build_n_scripts
 %patch12 -p1 -b .netcdff
@@ -397,6 +395,9 @@ done
 
 
 %changelog
+* Tue Mar 7 2017 Orion Poplawski <orion@cora.nwra.com> - 6.4.0-1
+- Update to 6.4.0
+
 * Thu Sep 29 2016 Orion Poplawski <orion@cora.nwra.com> - 6.3.0-9
 - Make ncl-devel require cairo-devel
 
