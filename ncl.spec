@@ -225,7 +225,7 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 %if "%{?altcc_cc_name}" == "intel"
 export FFLAGS="$FFLAGS -nogen-interfaces"
 %endif
-make Build CCOPTIONS="$RPM_OPT_FLAGS -fPIC -fno-strict-aliasing -fopenmp" F77=$FC F77_LD=$FC \
+make Build CCOPTIONS="$RPM_OPT_FLAGS -std=c99 -fPIC -fno-strict-aliasing -fopenmp" F77=$FC F77_LD=$FC \
  FCOPTIONS="$FFLAGS -fPIC -fno-second-underscore -fno-range-check -fopenmp" \
  COPT= FOPT=
 
