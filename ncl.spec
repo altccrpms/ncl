@@ -4,7 +4,7 @@
 
 Name:           ncl%{?altcc_pkg_suffix}
 Version:        %{ver}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NCAR Command Language and NCAR Graphics
 
 Group:          Applications/Engineering
@@ -392,6 +392,9 @@ done
 
 
 %changelog
+* Mon Apr 10 2017 Orion Poplawski <orion@cora.nwra.com> - 6.4.0-2
+- Fix NCL_LIB, add NCARG_INCLUDE
+
 * Tue Mar 7 2017 Orion Poplawski <orion@cora.nwra.com> - 6.4.0-1
 - Update to 6.4.0
 
