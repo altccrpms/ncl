@@ -176,9 +176,12 @@ rm -rf external/blas external/lapack
 [ -z "$CXX" ] && export CXX=g++
 [ -z "$FC" ] && export FC=gfortran
 
-%if "%{?altcc_cc_name}" == "intel"
 # Link with Fortran compiler to get proper libraries for mixed C/Fortran code
-export CC_LD="ifort -nofor-main"
+%if "%{?altcc_cc_name}" == "intel"
+export CC_LD="$FC -nofor-main"
+%endif
+%if "%{?altcc_cc_name}" == "pgf"
+export CC_LD="$FC -Mnomain"
 %endif
 
 # fix the install directories
@@ -221,13 +224,22 @@ sed -i -e 's;load "\$NCARG_ROOT/lib/ncarg/nclex\([^ ;]*\);loadscript(ncargpath("
 # (cd ./config; make -f Makefile.ini clean all)
 # ./config/ymake -config ./config -Curdir . -Topdir .
 [ -z "$FC" ] && export FC=gfortran
+[ -z "$CFLAGS" ] && export CFLAGS="$RPM_OPT_FLAGS"
 [ -z "$FFLAGS" ] && export FFLAGS="$RPM_OPT_FLAGS"
+export CFLAGS="$RPM_OPT_FLAGS -std=c99 -fPIC -fno-strict-aliasing"
+export FFLAGS="$RPM_OPT_FLAGS -fPIC"
 %if "%{?altcc_cc_name}" == "intel"
 export FFLAGS="$FFLAGS -nogen-interfaces"
 %endif
-make Build CCOPTIONS="$RPM_OPT_FLAGS -std=c99 -fPIC -fno-strict-aliasing -fopenmp" F77=$FC F77_LD=$FC \
- FCOPTIONS="$FFLAGS -fPIC -fno-second-underscore -fno-range-check -fopenmp" \
- COPT= FOPT=
+%if "%{?altcc_cc_name}" == "pgf"
+export CFLAGS="$CFLAGS -fopenmp"
+export FFLAGS="$FFLAGS -mp"
+%else
+export CFLAGS="$CFLAGS -fopenmp"
+export FFLAGS="$FFLAGS -fno-second-underscore -fno-range-check -fopenmp"
+%endif
+make Build CCOPTIONS="$CFLAGS" F77=$FC F77_LD=$FC \
+           FCOPTIONS="$FFLAGS" COPT= FOPT=
 
 
 %install

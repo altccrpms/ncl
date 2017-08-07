@@ -16,6 +16,7 @@
 #define NetCDF4lib -lnetcdf
 #define BuildCAIRO 1
 #define CAIROlib -lcairo -lfreetype
+#define CAIROlibuser -lcairo -lfreetype
 #define BuildGDAL 1
 #define GDALlib -lgdal -lproj
 #define BuildHDFEOS 0
